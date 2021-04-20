@@ -1,7 +1,9 @@
 import express from "express";
 import connectDb from "./config/db.js";
 import products from "./data/products.js";
+import dotenv from "dotenv";
 
+dotenv.config();
 const app = express();
 
 app.get("/", (req, res) => res.json("Hello Tagline Traders.!"));
@@ -11,4 +13,7 @@ app.get("/api/product/:id", (req, res) => {
   console.log(product);
   res.json(product);
 });
-app.listen(5000, () => console.log("Server Listening on PORT 5000"));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () =>
+  console.log(`Server Listening on PORT ${PORT} in ${process.env.NODE_ENV}`)
+);
