@@ -30,7 +30,9 @@ router.get(
     );
     const product = await Product.findById(req.params.id);
     if (product) res.json(product);
-    else res.status(404).json(`Product Not Found : ${req.params.id}`);
+    else res.status(404);
+    throw new Error("Product Not Found");
+    //.json(`Product Not Found : ${req.params.id}`);
   })
 );
 
