@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap";
 import products from "../data/products";
+import { useDispatch, useSelector } from "react-redux";
+import { productDetails } from "../actions/productActions";
 
-const ProductScreen = ({ match }) => {
+const ProductDetailsScreen = ({ match }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(productDetails());
+  }, [dispatch]);
+
   console.log(" match.params.id : " + match.params.id);
-
-  const product = products.find((p) => p._id.toString() === match.params.id);
+  const product = useSelector((state) => state.productDetails);
+  // const product = products.find((p) => p._id.toString() === match.params.id);
   console.log("Product : " + product);
   return (
     <>
@@ -75,4 +83,4 @@ const ProductScreen = ({ match }) => {
   );
 };
 
-export default ProductScreen;
+export default ProductDetailsScreen;

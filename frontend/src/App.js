@@ -4,7 +4,7 @@ import Footer from "./components/Footer";
 import { Container, Row, Col } from "react-bootstrap";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import HomeScreen from "./components/HomeScreen";
-import ProductScreen from "./components/ProductScreen";
+import ProductDetailsScreen from "./components/ProductDetailsScreen";
 
 const App = () => {
   return (
@@ -13,7 +13,7 @@ const App = () => {
       <main>
         <Container>
           <Route path="/" component={HomeScreen} exact />
-          <Route path="/product/:id" component={ProductScreen} />
+          <Route path="/product/:id" component={ProductDetailsScreen} />
         </Container>
       </main>
       <Footer />
