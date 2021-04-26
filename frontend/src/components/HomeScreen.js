@@ -14,7 +14,14 @@ const HomeScreen = () => {
   }, [dispatch]);
   const productList = useSelector((state) => state.productList);
   const { loading, products, error } = productList;
-
+  let renderProducts = "";
+  if (products) {
+    renderProducts = products.map((product) => (
+      <Col sm={12} md={8} lg={6} xl={4} key={product._id}>
+        <Product product={product} />
+      </Col>
+    ));
+  }
   return (
     <div>
       {loading ? (
@@ -22,13 +29,7 @@ const HomeScreen = () => {
       ) : error ? (
         <Message>{error}</Message>
       ) : (
-        <Row>
-          {products.map((product) => (
-            <Col sm={12} md={8} lg={6} xl={4} key={product._id}>
-              <Product product={product} />
-            </Col>
-          ))}
-        </Row>
+        <Row>{renderProducts}</Row>
       )}
     </div>
   );
