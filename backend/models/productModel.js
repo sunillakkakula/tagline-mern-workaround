@@ -7,12 +7,18 @@ const productSchema = mongoose.Schema(
       required: true,
       ref: "User",
     },
+    subCategory: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "SubCategory",
+    },
     name: {
       type: String,
       required: true,
     },
-    image: {
+    imageUrl: {
       type: String,
+      required: true,
     },
     brand: {
       type: String,
@@ -20,16 +26,24 @@ const productSchema = mongoose.Schema(
     description: {
       type: String,
     },
-    category: {
-      type: String,
-      required: true,
-    },
     price: {
       type: Number,
       required: true,
     },
     countInStock: {
       type: Number,
+      required: true,
+    },
+    isTaxable: {
+      type: Boolean,
+      required: true,
+    },
+    taxPercent: {
+      type: Number,
+      required: true,
+    },
+    isVttBestSeller: {
+      type: Boolean,
       required: true,
     },
   },
