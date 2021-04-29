@@ -1,4 +1,5 @@
 import express from "express";
+import bodyParser from "body-parser";
 import connectDb from "./config/db.js";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes.js";
@@ -8,19 +9,20 @@ import productRoutes from "./routes/productRoutes.js";
 import availableInBulkRoutes from "./routes/availableInBulkRoutes.js";
 import availableInDomesticRoutes from "./routes/availableInDomesticRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
-
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
 connectDb();
 const app = express();
-app.use("/api/users", userRoutes);
-app.use("/api/categories", categoryRoutes);
-app.use("/api/subcategories", subCategoryRoutes);
-app.use("/api/products", productRoutes);
+app.use(express.json());
+// app.use(require("connect").bodyParser());
+app.use("/api/user", userRoutes);
+app.use("/api/category", categoryRoutes);
+app.use("/api/subcategory", subCategoryRoutes);
+app.use("/api/product", productRoutes);
 app.use("/api/avail-bulk", availableInBulkRoutes);
 app.use("/api/avail-domestic", availableInDomesticRoutes);
-app.use("/api/orders", orderRoutes);
+app.use("/api/order", orderRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
