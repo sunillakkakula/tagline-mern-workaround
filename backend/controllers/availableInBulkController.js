@@ -59,7 +59,14 @@ const remove = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 const create = asyncHandler(async (req, res) => {
   const {} = req.body;
-  const { unitOfMessure, qty, unitPrice, sellingPrice, mrp } = req.body;
+  const {
+    unitOfMessure,
+    qty,
+    unitPrice,
+    sellingPrice,
+    mrp,
+    product,
+  } = req.body;
 
   const availableInBulk = new AvailableInBulk({
     unitOfMessure,
@@ -67,6 +74,7 @@ const create = asyncHandler(async (req, res) => {
     unitPrice,
     sellingPrice,
     mrp,
+    product,
   });
 
   const createdAvailableInBulk = await availableInBulk.save();
@@ -77,15 +85,23 @@ const create = asyncHandler(async (req, res) => {
 // @route   PUT /api/categorys/:id
 // @access  Private/Admin
 const update = asyncHandler(async (req, res) => {
-  const { unitOfMessure, qty, unitPrice, sellingPrice, mrp } = req.body;
+  const {
+    unitOfMessure,
+    qty,
+    unitPrice,
+    sellingPrice,
+    mrp,
+    product,
+  } = req.body;
   const availableInBulk = await AvailableInBulk.findById(req.params.id);
 
   if (availableInBulk) {
-    (availableInBulk.unitOfMessure = unitOfMessure),
-      (availableInBulk.qty = qty),
-      (availableInBulk.unitPrice = unitPrice),
-      (availableInBulk.sellingPrice = sellingPrice),
-      (availableInBulk.mrp = unitOfMessure);
+    availableInBulk.unitOfMessure = unitOfMessure;
+    availableInBulk.qty = qty;
+    availableInBulk.unitPrice = unitPrice;
+    availableInBulk.sellingPrice = sellingPrice;
+    availableInBulk.mrp = mrp;
+    availableInBulk.product = product;
 
     const updatedAvailableInBulk = await availableInBulk.save();
     res.json(updatedAvailableInBulk);
