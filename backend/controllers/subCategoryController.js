@@ -58,10 +58,12 @@ const remove = asyncHandler(async (req, res) => {
 // @route   POST /api/categorys
 // @access  Private/Admin
 const create = asyncHandler(async (req, res) => {
-  const { name, description } = req.body;
+  const { name, description, imageUrl, category } = req.body;
   const subCategory = new SubCategory({
     name: name,
     description: description,
+    imageUrl: imageUrl,
+    category: category,
   });
 
   const createdSubCategory = await subCategory.save();
