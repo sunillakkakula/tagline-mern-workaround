@@ -10,13 +10,9 @@ import {
 } from "../controllers/productController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
-router.route("/").get(getAll).post(protect, admin, create);
 router.get("/bestseller", getBestSellers);
-router.route("/").post(create).get(protect, admin, getAll);
-router
-  .route("/:id")
-  .get(getById)
-  .delete(protect, admin, remove)
-  .put(protect, admin, update);
+router.route("/").post(create);
+router.route("/").get(getAll);
+router.route("/:id").get(getById).delete(remove).put(update);
 
 export default router;

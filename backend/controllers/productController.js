@@ -61,27 +61,26 @@ const create = asyncHandler(async (req, res) => {
   const {
     name,
     description,
-    price,
     imageUrl,
     brand,
     subCategory,
     countInStock,
     isTaxable,
-    taxxPercent,
+    taxPercent,
     isVttBestSeller,
+    user,
   } = req.body;
 
   const product = new Product({
     name,
     description,
-    price,
-    user: req.user._id,
-    image: imageUrl,
+    user: user,
+    imageUrl: imageUrl,
     brand,
     subCategory: subCategory,
     countInStock,
     isTaxable,
-    taxxPercent,
+    taxPercent,
     isVttBestSeller,
   });
 
@@ -95,9 +94,8 @@ const create = asyncHandler(async (req, res) => {
 const update = asyncHandler(async (req, res) => {
   const {
     name,
-    price,
     description,
-    image,
+    imageUrl,
     brand,
     subCategory,
     countInStock,
@@ -110,9 +108,9 @@ const update = asyncHandler(async (req, res) => {
 
   if (product) {
     product.name = name;
-    product.price = price;
+    product.imageUrl = imageUrl;
     product.description = description;
-    product.image = image;
+    product.imageUrl = imageUrl;
     product.brand = brand;
     product.countInStock = countInStock;
     product.subCategory = subCategory;
