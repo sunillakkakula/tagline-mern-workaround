@@ -59,7 +59,14 @@ const remove = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 const create = asyncHandler(async (req, res) => {
   const {} = req.body;
-  const { unitOfMessure, qty, unitPrice, sellingPrice, mrp } = req.body;
+  const {
+    unitOfMessure,
+    qty,
+    unitPrice,
+    sellingPrice,
+    mrp,
+    product,
+  } = req.body;
 
   const availableInDomestic = new AvailableInDomestic({
     unitOfMessure,
@@ -67,6 +74,7 @@ const create = asyncHandler(async (req, res) => {
     unitPrice,
     sellingPrice,
     mrp,
+    product,
   });
 
   const createdAvailableInDomestic = await availableInDomestic.save();
@@ -77,15 +85,23 @@ const create = asyncHandler(async (req, res) => {
 // @route   PUT /api/categorys/:id
 // @access  Private/Admin
 const update = asyncHandler(async (req, res) => {
-  const { unitOfMessure, qty, unitPrice, sellingPrice, mrp } = req.body;
+  const {
+    unitOfMessure,
+    qty,
+    unitPrice,
+    sellingPrice,
+    mrp,
+    product,
+  } = req.body;
   const availableInDomestic = await AvailableInDomestic.findById(req.params.id);
 
   if (availableInDomestic) {
-    (availableInDomestic.unitOfMessure = unitOfMessure),
-      (availableInDomestic.qty = qty),
-      (availableInDomestic.unitPrice = unitPrice),
-      (availableInDomestic.sellingPrice = sellingPrice),
-      (availableInDomestic.mrp = unitOfMessure);
+    availableInDomestic.unitOfMessure = unitOfMessure;
+    availableInDomestic.qty = qty;
+    availableInDomestic.unitPrice = unitPrice;
+    availableInDomestic.sellingPrice = sellingPrice;
+    availableInDomestic.mrp = mrp;
+    availableInDomestic.product = product;
 
     const updatedAvailableInDomestic = await availableInDomestic.save();
     res.json(updatedAvailableInDomestic);
