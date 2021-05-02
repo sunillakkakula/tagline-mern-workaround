@@ -73,22 +73,24 @@ export default function MainCategories() {
   }, [dispatch]);
   const categoryList = useSelector((state) => state.categoryList);
   const { loading, error, categories } = categoryList;
-  console.log(categories);
+  const cats = categoryList.categories;
+
+  console.log(cats);
   let tempImgUrl = "";
 
-  if (categories && categories.length > 0) {
+  if (cats.categories && cats.categories.length > 0) {
     renderMainCategories = (
       <Grid container className={classes.root} spacing={1}>
         <Grid item xs={12}>
           <Grid container justify="center" spacing={6}>
-            {categories.map((item, index) => (
-              <Grid item key={item.id}>
+            {cats.categories.map((item, index) => (
+              <Grid item key={item._id}>
                 {
                   console.log(
                     "Each Item Id : " +
-                      item.id +
+                      item._id +
                       ", Category Name : " +
-                      item.imageurl
+                      item.imageUrl
                   )
                   // tempImgUrl = item.imageurl;
                 }
@@ -104,7 +106,7 @@ export default function MainCategories() {
                           " Category Name : " +
                           item.name
                       );
-                      history.push(`/category/${item.id}`);
+                      history.push(`/category/${item._id}`);
                     }}
                     style={{
                       width: "130",
@@ -114,7 +116,7 @@ export default function MainCategories() {
                     <img
                       className="img-thumbnail"
                       alt="Staples"
-                      src={item.imageurl}
+                      src={item.imageUrl}
                       style={{
                         width: "130",
                         height: "130",
@@ -132,7 +134,7 @@ export default function MainCategories() {
       </Grid>
     );
   } else {
-    renderMainCategories = <Message>No Records Found for Categories: </Message>;
+    renderMainCategories = "";
   }
   return <>{renderMainCategories}</>;
 }
