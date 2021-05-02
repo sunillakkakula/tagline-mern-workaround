@@ -10,7 +10,7 @@ import {
 } from "../controllers/productController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
-router.get("/bestseller", getBestSellers);
+router.get("/best-seller", getBestSellers);
 router.route("/").post(create);
 router.route("/").get(getAll);
 

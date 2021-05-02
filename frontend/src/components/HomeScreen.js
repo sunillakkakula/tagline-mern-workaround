@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Product from "./Product";
 import { Row, Col } from "react-bootstrap";
-import { listProducts } from "../actions/productActions";
+import { listProducts } from "../actions/productAction";
 import Paginate from "../components/Paginate";
 const HomeScreen = ({ match }) => {
   const keyword = match.params.keyword;

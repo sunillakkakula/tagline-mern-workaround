@@ -12,7 +12,7 @@ import {
 } from "react-bootstrap";
 import Loader from "./Loader";
 import Message from "./Message";
-import { listProductDetails } from "../actions/productActions";
+import { listProductDetails } from "../actions/productAction";
 
 const ProductDetailsScreen = ({ history, match }) => {
   const dispatch = useDispatch({ match });

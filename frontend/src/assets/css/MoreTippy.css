@@ -1,0 +1,29 @@
+
+.moret{
+    border-radius: 5px;
+
+}
+.moret__in{
+    display:flex;
+    align-items:center;
+    align-content:center;
+    color:black;
+    background-color: whitesmoke;
+    /* padding:0px 7px; */
+    cursor: pointer;
+}
+
+.moret__in:hover{
+    color: lightgray;
+}
+
+.moret> hr{
+    margin-left: -10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    width:108.5%;
+    /* height:"0.1px"; */
+    background-color:lightgray;
+    border:none;
+}
+
