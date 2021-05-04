@@ -10,7 +10,7 @@ import {
   getBestSellers,
 } from "../controllers/productController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
-router.get("/subcategory/:id", getAllBySubCategory);
+router.get("/subcat/:id", getAllBySubCategory);
 router.get("/best-seller", getBestSellers);
 router.route("/").post(create);
 router.route("/").get(getAll);
