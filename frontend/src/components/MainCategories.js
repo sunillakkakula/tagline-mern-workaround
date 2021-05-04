@@ -102,7 +102,7 @@ export default function MainCategories() {
                     onClick={() => {
                       console.log(
                         "Clicked category : " +
-                          item.id +
+                          item._id +
                           " Category Name : " +
                           item.name
                       );

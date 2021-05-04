@@ -117,7 +117,7 @@ export const listProductDetailsByProductId = (productId) => async (
 export const listProductsByCategoryId = (categoryId) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_BY_CATEGORY_ID_REQUEST });
-    const { data } = await axios.get(`/api/category/${categoryId}/product`);
+    const { data } = await axios.get(`/api/product/cat/${categoryId}`);
 
     dispatch({
       type: PRODUCT_LIST_BY_CATEGORY_ID_SUCCESS,

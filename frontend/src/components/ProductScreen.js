@@ -340,7 +340,7 @@ const ProductScreen = ({ history, match }) => {
               <Paper className={classes.paper}>
                 <img
                   alt="productImage"
-                  src={product.imageurl}
+                  src={product.imageUrl}
                   className={classes.image}
                 />
               </Paper>

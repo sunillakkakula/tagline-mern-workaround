@@ -60,7 +60,7 @@ const ProductOverview = ({ match, product, categoryId }) => {
 
   const addToCartHandler = () => {
     console.log("Clicked Add to Cart Handler");
-    history.push(`/product/${product.id}`);
+    history.push(`/product/${product._id}`);
   };
 
   return (
@@ -68,7 +68,7 @@ const ProductOverview = ({ match, product, categoryId }) => {
       <Card raised={2}>
         <CardMedia className={classes.cardMedia}>
           <Image
-            src={product.imageurl}
+            src={product.imageUrl}
             alt={product.name}
             className={classes.image}
           />

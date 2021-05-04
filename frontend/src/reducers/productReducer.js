@@ -83,11 +83,11 @@ export const productListByCategoryIdReducer = (
 ) => {
   switch (action.type) {
     case PRODUCT_LIST_BY_CATEGORY_ID_REQUEST:
-      return { loading: true, category: {} };
+      return { loading: true, products: [] };
     case PRODUCT_LIST_BY_CATEGORY_ID_SUCCESS:
       return {
         loading: false,
-        category: action.payload,
+        products: action.payload,
       };
     case PRODUCT_LIST_BY_CATEGORY_ID_FAIL:
       return { loading: false, error: action.payload };
