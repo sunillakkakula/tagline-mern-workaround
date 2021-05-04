@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Product from "../models/productModel.js";
+import SubCategory from "../models/subCategoryModel.js";
 
 // @desc    Fetch all products
 // @route   GET /api/products
@@ -46,6 +47,48 @@ const getAllBySubCategory = asyncHandler(async (req, res) => {
     } else {
       res.status(404);
       throw new Error(`Products not found`);
+    }
+  }
+});
+
+// @desc    Fetch products bu cat ID
+// @route   GET /api/products/cat/:id
+// @access  Public
+const getAllProductsByCategory = asyncHandler(async (req, res) => {
+  const categoryId = req.params.id;
+  let products = [];
+  let filteredSubCategories = [];
+  let filteredProducts = [];
+  const subCategories = await SubCategory.find({});
+
+  if (subCategories) {
+    filteredSubCategories = subCategories.filter((eachSubCat) => {
+      return eachSubCat.category.toString() === categoryId.toString();
+    });
+    if (filteredSubCategories) {
+      console.log(
+        "filteredSubCategories Size :--> " + filteredSubCategories.length
+      );
+      products = await Product.find();
+      filteredSubCategories.forEach((fsb) => {
+        console.log(fsb.category);
+        products.forEach((product) => {
+          if (fsb._id.toString() === product.subCategory.toString()) {
+            console.log("Matched Rec : " + product);
+            filteredProducts = [...filteredProducts, product];
+          }
+        });
+      });
+
+      if (filteredProducts) {
+        console.log("filteredProducts Size :--> " + filteredProducts.length);
+        res.json(filteredProducts);
+      } else {
+        console.log("No Matched Products  for CategoryId:--> " + categoryId);
+        res.json(filteredProducts);
+      }
+    } else {
+      throw new Error(`Sub Category not found for the ${categoryId}`);
     }
   }
 });
@@ -170,4 +213,5 @@ export {
   update,
   getBestSellers,
   getAllBySubCategory,
+  getAllProductsByCategory,
 };
