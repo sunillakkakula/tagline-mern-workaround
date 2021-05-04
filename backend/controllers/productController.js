@@ -25,6 +25,31 @@ const getAll = asyncHandler(async (req, res) => {
   res.json({ products, page, pages: Math.ceil(count / pageSize) });
 });
 
+// getAllBySubCategory;
+
+// @desc    Fetch single product
+// @route   GET /api/products/:id
+// @access  Public
+const getAllBySubCategory = asyncHandler(async (req, res) => {
+  let filtered = [];
+  const subCategoryId = req.params.id;
+
+  const products = await Product.find();
+
+  if (products) {
+    filtered = products.filter((eachProduct) => {
+      return eachProduct.subCategory.toString() === subCategoryId.toString();
+    });
+    console.log(filtered);
+    if (filtered) {
+      res.json(filtered);
+    } else {
+      res.status(404);
+      throw new Error(`Products not found`);
+    }
+  }
+});
+
 // @desc    Fetch single product
 // @route   GET /api/products/:id
 // @access  Public
@@ -137,4 +162,12 @@ const getBestSellers = asyncHandler(async (req, res) => {
   res.json(products);
 });
 
-export { getAll, getById, remove, create, update, getBestSellers };
+export {
+  getAll,
+  getById,
+  remove,
+  create,
+  update,
+  getBestSellers,
+  getAllBySubCategory,
+};

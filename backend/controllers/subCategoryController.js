@@ -25,6 +25,34 @@ const getAll = asyncHandler(async (req, res) => {
   res.json({ subCategories, page, pages: Math.ceil(count / pageSize) });
 });
 
+// getAllByCategoryId;
+
+// @desc    Fetch Sub category
+// @route   GET /api/categorys/:id
+// @access  Public
+const getAllByCategoryId = asyncHandler(async (req, res) => {
+  let subCategories = [];
+  const categoryId = req.params.id;
+  console.log(`Fetching Sub Categories by Category Id :${categoryId}`);
+  //subCategories = await SubCategory.find({category:{ObjectId(categoryId)}});
+  subCategories = await SubCategory.find();
+  let filtered = [];
+  if (subCategories) {
+    filtered = subCategories.filter((eachSubCat) => {
+      // console.log(`${eachSubCat.category} ,${categoryId}`);
+
+      // console.log(`${categoryId} `);
+
+      return eachSubCat.category.toString() === categoryId.toString();
+    });
+    console.log(filtered);
+    res.json(filtered);
+  } else {
+    res.status(404);
+    throw new Error(`Sub Category not found for the ${categoryId}`);
+  }
+});
+
 // @desc    Fetch single category
 // @route   GET /api/categorys/:id
 // @access  Public
@@ -89,4 +117,4 @@ const update = asyncHandler(async (req, res) => {
   }
 });
 
-export { getAll, getById, remove, create, update };
+export { getAll, getById, remove, create, update, getAllByCategoryId };
