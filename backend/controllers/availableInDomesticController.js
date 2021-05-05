@@ -111,4 +111,23 @@ const update = asyncHandler(async (req, res) => {
   }
 });
 
-export { getAll, getById, remove, create, update };
+// @desc    Fetch single category
+// @route   GET /api/categorys/:id
+// @access  Public
+const getAllByProductId = asyncHandler(async (req, res) => {
+  const productId = req.params.id;
+  console.log(productId);
+  const availableInDomestics = await AvailableInDomestic.find();
+  const filteredDomestic = availableInDomestics.filter(
+    (domestic) => domestic.product === productId
+  );
+  console.log(filteredDomestic);
+  if (filteredDomestic) {
+    res.json(filteredDomestic);
+  } else {
+    res.status(404);
+    throw new Error(`Available In Domestic  not found ${productId}`);
+  }
+});
+
+export { getAll, getById, remove, create, update, getAllByProductId };

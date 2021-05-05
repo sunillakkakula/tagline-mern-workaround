@@ -14,7 +14,7 @@ import {
   SUB_CATEGORY_UPDATE_FAIL,
 } from "../constants/subCategoryConstants";
 
-export const listCategories = () => async (dispatch) => {
+export const listSubCategories = () => async (dispatch) => {
   try {
     dispatch({ type: SUB_CATEGORY_LIST_REQUEST });
 
@@ -35,7 +35,7 @@ export const listCategories = () => async (dispatch) => {
   }
 };
 
-export const deleteCategory = (id) => async (dispatch, getState) => {
+export const deleteSubCategory = (id) => async (dispatch, getState) => {
   try {
     dispatch({
       type: SUB_CATEGORY_DELETE_REQUEST,
@@ -58,7 +58,7 @@ export const deleteCategory = (id) => async (dispatch, getState) => {
   }
 };
 
-export const createCategory = () => async (dispatch, getState) => {
+export const createSubCategory = () => async (dispatch, getState) => {
   try {
     dispatch({
       type: SUB_CATEGORY_CREATE_REQUEST,
@@ -81,9 +81,9 @@ export const createCategory = () => async (dispatch, getState) => {
       payload: message,
     });
   }
-};
+ };
 
-export const updateCategory = (category) => async (dispatch, getState) => {
+export const updateSubCategory = (category) => async (dispatch, getState) => {
   try {
     dispatch({
       type: SUB_CATEGORY_UPDATE_REQUEST,

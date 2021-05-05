@@ -25,8 +25,8 @@ const getAll = asyncHandler(async (req, res) => {
   res.json({ availableInBulk, page, pages: Math.ceil(count / pageSize) });
 });
 
-// @desc    Fetch single category
-// @route   GET /api/categorys/:id
+// @desc    Fetch single availableInBulk
+// @route   GET /api/availableInBulk/:id
 // @access  Public
 const getById = asyncHandler(async (req, res) => {
   const availableInBulk = await AvailableInBulk.findById(req.params.id);
@@ -36,6 +36,25 @@ const getById = asyncHandler(async (req, res) => {
   } else {
     res.status(404);
     throw new Error("Available In Bulk not found");
+  }
+});
+
+// @desc    Fetch single category
+// @route   GET /api/categorys/:id
+// @access  Public
+const getAllByProductId = asyncHandler(async (req, res) => {
+  const productId = req.params.id;
+  console.log(productId);
+  const availableInBulks = await AvailableInBulk.find();
+  const filteredBulk = availableInBulks.filter(
+    (bulk) => bulk.product === productId
+  );
+  console.log(filteredBulk);
+  if (filteredBulk) {
+    res.json(filteredBulk);
+  } else {
+    res.status(404);
+    throw new Error(`Available In Bulk not found ${productId}`);
   }
 });
 
@@ -111,4 +130,4 @@ const update = asyncHandler(async (req, res) => {
   }
 });
 
-export { getAll, getById, remove, create, update };
+export { getAll, getById, remove, create, update, getAllByProductId };

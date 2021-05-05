@@ -57,6 +57,8 @@ const ProductScreen = ({ history, match }) => {
     return 0;
   });
 
+  const orderTypeOptions = ["Select", "Bulk", "Domestic"];
+
   const options = Array(100)
     .fill()
     .map((_, i) => {
@@ -67,14 +69,10 @@ const ProductScreen = ({ history, match }) => {
     console.log("Order Type Ver2 Changed :--> " + value);
     setOrderTypeSelected(value);
   };
-  const orderTypeOptions = ["Select", "Bulk", "Domestic"];
 
   const calculateSellingPrice = (qtySelected) => {
     console.log("Exc calculateSellingPrice for QTY : " + qtySelected);
-    if (
-      (orderTypeSelected === "d" || orderTypeSelected === "Domestic") &&
-      qtySelected > 0
-    ) {
+    if (orderTypeSelected === "Domestic" && qtySelected > 0) {
       return product.availableInDomestic
         .filter((domestic) => domestic.unitOfMessure === uom)
         .map((matchedRec) => {
@@ -87,10 +85,7 @@ const ProductScreen = ({ history, match }) => {
           console.log("Result of CALC" + matchedRec.sellingPrice * qtySelected);
           return matchedRec.sellingPrice * qtySelected;
         });
-    } else if (
-      (orderTypeSelected === "b" || orderTypeSelected === "Bulk") &&
-      qtySelected > 0
-    ) {
+    } else if (orderTypeSelected === "Bulk" && qtySelected > 0) {
       return product.availableInBulk
         .filter((bulk) => bulk.unitOfMessure === uom)
         .map((matchedRec) => {
@@ -116,15 +111,10 @@ const ProductScreen = ({ history, match }) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log("Exec useEffect..!" + "" + uom + "" + orderTypeSelected);
+    console.log("Exec useEffect..!" + uom + "" + orderTypeSelected);
 
-    dispatch(
-      listProductDetailsByProductId(
-        // match.params.subCategoryId,
-        match.params.productId
-      )
-    );
-  }, [dispatch, match]);
+    //dispatch(listProductDetailsByProductId(match.params.productId));
+  }, [uom, match, orderTypeSelected]);
 
   const productDetailsByProductId = useSelector(
     (state) => state.productDetailsByProductId
@@ -136,7 +126,7 @@ const ProductScreen = ({ history, match }) => {
     if (product) {
       console.log("orderTypeSelected : " + orderTypeSelected);
       if (orderTypeSelected === "Domestic") {
-        console.log("Exec D Option Menu Code");
+        console.log("Exec Domestic Option Menu Code");
         console.log(product.availableInDomestic);
         if (product.availableInDomestic) {
           return product.availableInDomestic.map((domesticItem, i) => {
@@ -147,9 +137,8 @@ const ProductScreen = ({ history, match }) => {
             );
           });
         }
-      }
-      if (orderTypeSelected === "Bulk") {
-        console.log("Exec b Option Menu Code");
+      } else if (orderTypeSelected === "Bulk") {
+        console.log("Exec Bulk Option Menu Code");
         console.log(product);
         if (product.availableInBulk) {
           return product.availableInBulk.map((bulkItem, i) => {

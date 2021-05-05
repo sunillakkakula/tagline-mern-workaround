@@ -38,6 +38,20 @@ import {
   userUpdateReducer,
 } from "./reducers/userReducers";
 import {
+  bulkListReducer,
+  bulkCreateByProductIdReducer,
+  bulkDeleteByProductIdReducer,
+  bulkUpdateByProductIdReducer,
+  bulkListByProductIdReducer,
+} from "./reducers/bulkReducers";
+import {
+  domesticListReducer,
+  domesticCreateByProductIdReducer,
+  domesticDeleteByProductIdReducer,
+  domesticUpdateByProductIdReducer,
+  domesticListByProductIdReducer,
+} from "./reducers/domesticReducers";
+import {
   orderCreateReducer,
   orderDetailsReducer,
   orderPayReducer,
@@ -67,6 +81,16 @@ const reducer = combineReducers({
   productReviewCreate: productReviewCreateReducer,
   productTopRated: productTopRatedReducer,
   bestSellers: productBestSellerReducer,
+  bulkList: bulkListReducer,
+  bulkCreateByProductId: bulkCreateByProductIdReducer,
+  bulkDeleteByProductId: bulkDeleteByProductIdReducer,
+  bulkUpdateByProductId: bulkUpdateByProductIdReducer,
+  bulkListByProductId: bulkListByProductIdReducer,
+  domesticList: domesticListReducer,
+  domesticCreateByProductId: domesticCreateByProductIdReducer,
+  domesticDeleteByProductId: domesticDeleteByProductIdReducer,
+  domesticUpdateByProductId: domesticUpdateByProductIdReducer,
+  domesticListByProductId: domesticListByProductIdReducer,
   cart: cartReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
