@@ -67,6 +67,7 @@ export const domesticCreateByProductIdReducer = (state = {}, action) => {
 
     default:
       return state;
+  }
 };
 
 export const domesticUpdateByProductIdReducer = (
