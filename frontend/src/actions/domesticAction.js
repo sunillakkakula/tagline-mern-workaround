@@ -18,7 +18,7 @@ export const listDomesticByProductId = (id) => async (dispatch) => {
   try {
     dispatch({ type: DOMESTIC_LIST_BY_PRODUCT_ID_REQUEST });
 
-    const { data } = await axios.get(`/api/domestic/product/${id}`);
+    const { data } = await axios.get(`/api/avail-domestic/product/${id}`);
 
     dispatch({
       type: DOMESTIC_LIST_BY_PRODUCT_ID_SUCCESS,
@@ -41,7 +41,7 @@ export const deleteDomesticByProductId = (id) => async (dispatch, getState) => {
       type: DOMESTIC_DELETE_BY_PRODUCT_ID_REQUEST,
     });
 
-    await axios.delete(`/api/domestic/product/${id}`);
+    await axios.delete(`/api/avail-domestic/product/${id}`);
 
     dispatch({
       type: DOMESTIC_DELETE_BY_PRODUCT_ID_SUCCESS,
@@ -64,7 +64,7 @@ export const createDomesticByProductId = (id) => async (dispatch, getState) => {
       type: DOMESTIC_CREATE_BY_PRODUCT_ID_REQUEST,
     });
 
-    const { data } = await axios.post(`/api/domestic/product/${id}`, {});
+    const { data } = await axios.post(`/api/avail-domestic/product/${id}`, {});
 
     dispatch({
       type: DOMESTIC_CREATE_BY_PRODUCT_ID_SUCCESS,
@@ -89,7 +89,7 @@ export const updateDomesticByProductId = (id) => async (dispatch, getState) => {
       type: DOMESTIC_UPDATE_BY_PRODUCT_ID_REQUEST,
     });
 
-    const { data } = await axios.put(`/api/domestic/product/${id}`);
+    const { data } = await axios.put(`/api/avail-domestic/product/${id}`);
 
     dispatch({
       type: DOMESTIC_UPDATE_BY_PRODUCT_ID_SUCCESS,

@@ -18,7 +18,7 @@ export const listBulkByProductId = (id) => async (dispatch) => {
   try {
     dispatch({ type: BULK_LIST_BY_PRODUCT_ID_REQUEST });
 
-    const { data } = await axios.get(`/api/bulk/product/${id}`);
+    const { data } = await axios.get(`/api/avail-bulk/product/${id}`);
 
     dispatch({
       type: BULK_LIST_BY_PRODUCT_ID_SUCCESS,
@@ -41,7 +41,7 @@ export const deleteBulkByProductId = (id) => async (dispatch, getState) => {
       type: BULK_DELETE_BY_PRODUCT_ID_REQUEST,
     });
 
-    await axios.delete(`/api/bulk/product/${id}`);
+    await axios.delete(`/api/avail-bulk/product/${id}`);
 
     dispatch({
       type: BULK_DELETE_BY_PRODUCT_ID_SUCCESS,
@@ -64,7 +64,7 @@ export const createBulkByProductId = (id) => async (dispatch, getState) => {
       type: BULK_CREATE_BY_PRODUCT_ID_REQUEST,
     });
 
-    const { data } = await axios.post(`/api/bulk/product/${id}`, {});
+    const { data } = await axios.post(`/api/avail-bulk/product/${id}`, {});
 
     dispatch({
       type: BULK_CREATE_BY_PRODUCT_ID_SUCCESS,
@@ -89,7 +89,7 @@ export const updateBulkByProductId = (id) => async (dispatch, getState) => {
       type: BULK_UPDATE_BY_PRODUCT_ID_REQUEST,
     });
 
-    const { data } = await axios.put(`/api/bulk/product/${id}`);
+    const { data } = await axios.put(`/api/avail-bulk/product/${id}`);
 
     dispatch({
       type: BULK_UPDATE_BY_PRODUCT_ID_SUCCESS,

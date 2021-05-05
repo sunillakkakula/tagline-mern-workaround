@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Select from "@material-ui/core/Select";
 import { listProductDetailsByProductId } from "../actions/productAction";
+import { listBulkByProductId } from "../actions/bulkAction";
+import { listDomesticByProductId } from "../actions/domesticAction";
 import { makeStyles } from "@material-ui/core/styles";
 import ReactSelectMaterialUi from "react-select-material-ui";
 import {
@@ -53,6 +55,37 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProductScreen = ({ history, match }) => {
+  let [orderTypeSelected, setOrderTypeSelected] = useState("bulk");
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(listProductDetailsByProductId(match.params.productId));
+  }, [dispatch, match]);
+
+  useEffect(() => {
+    console.log(
+      "Exec useEffect when orderTypeSelected is Chnaged..!" + orderTypeSelected
+    );
+    if (orderTypeSelected === "Bulk")
+      dispatch(listBulkByProductId(match.params.productId));
+    else if (orderTypeSelected === "Domestic") {
+      dispatch(listDomesticByProductId(match.params.productId));
+    }
+  }, [dispatch, match, orderTypeSelected]);
+
+  const productDetailsByProductId = useSelector(
+    (state) => state.productDetailsByProductId
+  );
+  const { product } = productDetailsByProductId;
+
+  const listBulkByProductId = useSelector((state) => state.listBulkByProductId);
+
+  const { loading, error, bulk } = listBulkByProductId;
+
+  const listDomesticByProductId = useSelector(
+    (state) => state.listDomesticByProductId
+  );
+  const { domestic } = listDomesticByProductId;
+
   const [quantitySelected, setQuantitySelected] = useState(() => {
     return 0;
   });
@@ -66,7 +99,7 @@ const ProductScreen = ({ history, match }) => {
     });
 
   const handleOrderTypeChange = (value) => {
-    console.log("Order Type Ver2 Changed :--> " + value);
+    console.log("Order Type Changed :--> " + value);
     setOrderTypeSelected(value);
   };
 
@@ -104,22 +137,9 @@ const ProductScreen = ({ history, match }) => {
     return 0.0;
   });
 
-  let [orderTypeSelected, setOrderTypeSelected] = useState("bulk");
   const classes = useStyles();
   const [uom, setUom] = useState(() => "None");
   // const [disableFlag, setDisableFlag] = useState(Boolean(true));
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    console.log("Exec useEffect..!" + uom + "" + orderTypeSelected);
-
-    //dispatch(listProductDetailsByProductId(match.params.productId));
-  }, [uom, match, orderTypeSelected]);
-
-  const productDetailsByProductId = useSelector(
-    (state) => state.productDetailsByProductId
-  );
-  const { loading, error, product } = productDetailsByProductId;
 
   const renderUomOptions = () => {
     console.log("*** Exec renderUomOptions --> Reading product ****");
@@ -205,7 +225,7 @@ const ProductScreen = ({ history, match }) => {
           </Link>
         </GridItem>
       </GridContainer>
-      {console.log("Product : " + product)}
+      {/* {console.log("Product : " + product)} */}
       {!product ? (
         <Message />
       ) : (
@@ -244,7 +264,7 @@ const ProductScreen = ({ history, match }) => {
                           </Grid>
                           <Grid item xs={6} align="center">
                             <Select value={uom} onChange={handleChangeUom}>
-                              {renderUomOptions()}
+                              {renderUomOptions}
                             </Select>
                           </Grid>
                         </Grid>
