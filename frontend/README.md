@@ -36,8 +36,8 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ### `npm run build` fails to minify
 
-###CREATE .env file with below Configruation:
-NODE_ENV = development
-PORT = 5000
-MONGO_URI = mongodb+srv://slakkakula:Charan6571@cluster0.sm0nw.mongodb.net/tagline_dev_db
+### CREATE .env file with below Configruation:
+### NODE_ENV = development
+### PORT = 5000
+### MONGO_URI = mongodb+srv://slakkakula:Charan6571@cluster0.sm0nw.mongodb.net/tagline_dev_db
 
