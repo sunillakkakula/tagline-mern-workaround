@@ -63,7 +63,17 @@ const getAllProductsByCategory = asyncHandler(async (req, res) => {
 
   if (subCategories) {
     filteredSubCategories = subCategories.filter((eachSubCat) => {
-      return eachSubCat.category.toString() === categoryId.toString();
+      console.log(
+        "eachSubCat.category : " +
+          eachSubCat.category +
+          " Type : " +
+          typeof eachSubCat.category +
+          ", categoryId: " +
+          categoryId +
+          ", Type : " +
+          typeof categoryId
+      );
+      return eachSubCat.category.toString() === categoryId;
     });
     if (filteredSubCategories) {
       console.log(

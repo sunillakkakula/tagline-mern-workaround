@@ -57,34 +57,25 @@ const useStyles = makeStyles((theme) => ({
 const ProductScreen = ({ history, match }) => {
   let [orderTypeSelected, setOrderTypeSelected] = useState("bulk");
   const dispatch = useDispatch();
+  console.log(match.params);
   useEffect(() => {
     dispatch(listProductDetailsByProductId(match.params.productId));
+    dispatch(listBulkByProductId(match.params.productId));
+    dispatch(listDomesticByProductId(match.params.productId));
   }, [dispatch, match]);
-
-  useEffect(() => {
-    console.log(
-      "Exec useEffect when orderTypeSelected is Chnaged..!" + orderTypeSelected
-    );
-    if (orderTypeSelected === "Bulk")
-      dispatch(listBulkByProductId(match.params.productId));
-    else if (orderTypeSelected === "Domestic") {
-      dispatch(listDomesticByProductId(match.params.productId));
-    }
-  }, [dispatch, match, orderTypeSelected]);
 
   const productDetailsByProductId = useSelector(
     (state) => state.productDetailsByProductId
   );
   const { product } = productDetailsByProductId;
 
-  const listBulkByProductId = useSelector((state) => state.listBulkByProductId);
-
-  const { loading, error, bulk } = listBulkByProductId;
-
-  const listDomesticByProductId = useSelector(
-    (state) => state.listDomesticByProductId
+  const bulkListByProductId = useSelector((state) => state.bulkListByProductId);
+  const domesticListByProductId = useSelector(
+    (state) => state.domesticListByProductId
   );
-  const { domestic } = listDomesticByProductId;
+
+  let { bulk } = bulkListByProductId;
+  let { domestic } = domesticListByProductId;
 
   const [quantitySelected, setQuantitySelected] = useState(() => {
     return 0;
@@ -102,34 +93,35 @@ const ProductScreen = ({ history, match }) => {
     console.log("Order Type Changed :--> " + value);
     setOrderTypeSelected(value);
   };
-
   const calculateSellingPrice = (qtySelected) => {
     console.log("Exc calculateSellingPrice for QTY : " + qtySelected);
     if (orderTypeSelected === "Domestic" && qtySelected > 0) {
-      return product.availableInDomestic
-        .filter((domestic) => domestic.unitOfMessure === uom)
+      return domestic
+        .filter((eachDomestic) => eachDomestic.unitOfMessure === uom)
         .map((matchedRec) => {
           console.log(
-            "matchedRec.sellingPrice * counter : matchedRec.sellingPrice -> " +
-              matchedRec.sellingPrice +
+            "matchedRec.unitPrice * counter : matchedRec.unitPrice -> " +
+              matchedRec.unitPrice +
               " , qtySelected : -> " +
               qtySelected
           );
-          console.log("Result of CALC" + matchedRec.sellingPrice * qtySelected);
-          return matchedRec.sellingPrice * qtySelected;
+          console.log(
+            "Result of CALC : -> " + matchedRec.unitPrice * qtySelected
+          );
+          return matchedRec.unitPrice * qtySelected;
         });
     } else if (orderTypeSelected === "Bulk" && qtySelected > 0) {
-      return product.availableInBulk
-        .filter((bulk) => bulk.unitOfMessure === uom)
+      return bulk
+        .filter((eachBulk) => eachBulk.unitOfMessure === uom)
         .map((matchedRec) => {
           console.log(
-            "matchedRec.sellingPrice * counter : matchedRec.sellingPrice -> " +
-              matchedRec.sellingPrice +
+            "matchedRec.unitPrice * counter : matchedRec.unitPrice -> " +
+              matchedRec.unitPrice +
               " , qtySelected : -> " +
               qtySelected
           );
-          console.log("Result of CALC" + matchedRec.sellingPrice * qtySelected);
-          return matchedRec.sellingPrice * qtySelected;
+          console.log("Result of CALC" + matchedRec.unitPrice * qtySelected);
+          return matchedRec.unitPrice * qtySelected;
         });
     }
   };
@@ -143,32 +135,29 @@ const ProductScreen = ({ history, match }) => {
 
   const renderUomOptions = () => {
     console.log("*** Exec renderUomOptions --> Reading product ****");
-    if (product) {
-      console.log("orderTypeSelected : " + orderTypeSelected);
-      if (orderTypeSelected === "Domestic") {
-        console.log("Exec Domestic Option Menu Code");
-        console.log(product.availableInDomestic);
-        if (product.availableInDomestic) {
-          return product.availableInDomestic.map((domesticItem, i) => {
-            return (
-              <MenuItem key={i} value={domesticItem.unitOfMessure}>
-                {domesticItem.unitOfMessure}
-              </MenuItem>
-            );
-          });
-        }
-      } else if (orderTypeSelected === "Bulk") {
-        console.log("Exec Bulk Option Menu Code");
-        console.log(product);
-        if (product.availableInBulk) {
-          return product.availableInBulk.map((bulkItem, i) => {
-            return (
-              <MenuItem key={i} value={bulkItem.unitOfMessure}>
-                {bulkItem.unitOfMessure}
-              </MenuItem>
-            );
-          });
-        }
+    console.log("orderTypeSelected : " + orderTypeSelected);
+    if (orderTypeSelected === "Domestic") {
+      console.log("Exec Domestic Option Menu Code");
+
+      if (domestic) {
+        console.log(domestic);
+        return domestic.map((domesticItem, i) => {
+          return (
+            <MenuItem key={i} value={domesticItem.unitOfMessure}>
+              {domesticItem.unitOfMessure}
+            </MenuItem>
+          );
+        });
+      }
+    } else if (orderTypeSelected === "Bulk") {
+      if (bulk) {
+        return bulk.map((bulkItem, i) => {
+          return (
+            <MenuItem key={i} value={bulkItem.unitOfMessure}>
+              {bulkItem.unitOfMessure}
+            </MenuItem>
+          );
+        });
       }
     }
   };
@@ -264,7 +253,7 @@ const ProductScreen = ({ history, match }) => {
                           </Grid>
                           <Grid item xs={6} align="center">
                             <Select value={uom} onChange={handleChangeUom}>
-                              {renderUomOptions}
+                              {renderUomOptions()}
                             </Select>
                           </Grid>
                         </Grid>

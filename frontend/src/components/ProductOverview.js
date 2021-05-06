@@ -65,10 +65,10 @@ const ProductOverview = ({ match, product, categoryId }) => {
 
   return (
     <>
-      <Card raised={2}>
+      <Card raised={true}>
         <CardMedia className={classes.cardMedia}>
           <Image
-            src={product.imageUrl}
+            src={product.imageUrl ? product.imageUrl : ""}
             alt={product.name}
             className={classes.image}
           />

@@ -28,6 +28,7 @@ export const bulkListReducer = (state = { bulk: [] }, action) => {
       return state;
   }
 };
+
 export const bulkListByProductIdReducer = (state = { bulk: [] }, action) => {
   switch (action.type) {
     case BULK_LIST_BY_PRODUCT_ID_REQUEST:

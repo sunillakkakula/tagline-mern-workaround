@@ -90,13 +90,11 @@ export const listProductDetails = (subCategoryId, productId) => async (
   }
 };
 
-export const listProductDetailsByProductId = (productId) => async (
-  dispatch
-) => {
+export const listProductDetailsByProductId = (id) => async (dispatch) => {
   try {
-    console.log("Inside listProductDetailsByProductId : " + productId);
+    console.log("Inside listProductDetailsByProductId : " + id);
     dispatch({ type: PRODUCT_DETAILS_BY_PRODUCT_ID_REQUEST });
-    const { data } = await axios.get(`/api/product/${productId}`);
+    const { data } = await axios.get(`/api/product/${id}`);
 
     dispatch({
       type: PRODUCT_DETAILS_BY_PRODUCT_ID_SUCCESS,
@@ -123,7 +121,7 @@ export const listProductsByCategoryId = (categoryId) => async (dispatch) => {
       type: PRODUCT_LIST_BY_CATEGORY_ID_SUCCESS,
       payload: data,
     });
-    console.log(" Response Data : " + data);
+    // console.log(" Response Data : " + data);
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_BY_CATEGORY_ID_FAIL,
