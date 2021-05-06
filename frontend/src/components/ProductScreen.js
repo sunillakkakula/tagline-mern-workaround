@@ -167,7 +167,7 @@ const ProductScreen = ({ history, match }) => {
 
   const addToCartHandler = () => {
     history.push(
-      `/cart/${match.params.productId}?qty=${quantitySelected}&uom=${uom}&order=${orderTypeSelected}`
+      `/cart/${match.params.productId}?qty=${quantitySelected}&uom=${uom}&order=${orderTypeSelected}&price=${calculatedSellingPrice}`
     );
   };
 
@@ -175,18 +175,16 @@ const ProductScreen = ({ history, match }) => {
     console.log("Handler for Change of UOM : Value :-> " + event.target.value);
     setUom((u) => event.target.value);
     setQuantitySelected(0);
-    setCalculatedSellingPrice(0);
+    setCalculatedSellingPrice(0.0);
   };
   const handleChangeCounter = (value) => {
     console.log("value : " + value);
-    if (value === "0") {
-      console.log("value angd 0 are equal");
-      setCalculatedSellingPrice(0);
-    } else {
-      console.log("value angd 0 are  NOT equal");
+    if (value !== "0") {
+      console.log("Quantity selected is NOT equal 0");
       setQuantitySelected(value);
-      console.log(calculateSellingPrice(value));
-      setCalculatedSellingPrice(calculateSellingPrice(value));
+      const calculatedPrice = calculateSellingPrice(value);
+      console.log(calculatedPrice);
+      setCalculatedSellingPrice(calculatedPrice);
     }
   };
 

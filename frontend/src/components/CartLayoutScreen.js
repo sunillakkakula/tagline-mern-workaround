@@ -122,7 +122,8 @@ export default function CartLayoutScreen({ match, location, history }) {
 
   const productId = match.params.id;
   const searchStringArray = location.search.split("&");
-  let qty, uom, order;
+  console.log("searchStringArray : " + searchStringArray);
+  let qty, uom, order, price;
   searchStringArray.forEach(function (item) {
     var tempField = item.split("=");
     switch (tempField[0]) {
@@ -134,6 +135,9 @@ export default function CartLayoutScreen({ match, location, history }) {
         break;
       case "order":
         order = tempField[1];
+        break;
+      case "price":
+        price = Number(tempField[1]);
         break;
       default:
         break;
@@ -163,10 +167,10 @@ export default function CartLayoutScreen({ match, location, history }) {
 
   useEffect(() => {
     if (productId) {
-      dispatch(addToCart(productId, qty, uom, order));
+      dispatch(addToCart(productId, qty, uom, order, price));
       // dispatch(fetchUpdatedCartItemsCount());
     }
-  }, [dispatch, productId, uom, order]);
+  }, [dispatch, productId, qty, uom, order, price]);
 
   const removeFromCartHandler = (id, indx) => {
     console.log("Id :" + id);
@@ -297,7 +301,7 @@ export default function CartLayoutScreen({ match, location, history }) {
                               </Grid>
                             </Grid>
                             <Grid item xs={1}>
-                              <Form.Control
+                              {/* <Form.Control
                                 as="select"
                                 value={item.quantityOrdered}
                                 onChange={(e) => {
@@ -319,7 +323,7 @@ export default function CartLayoutScreen({ match, location, history }) {
                                     </option>
                                   )
                                 )}
-                              </Form.Control>
+                              </Form.Control> */}
                             </Grid>
                             {/* <Grid item xs={1}>
                               <ButtonGroup

@@ -8,13 +8,11 @@ import {
   CART_EDIT_ITEM,
 } from "../constants/cartConstants";
 
-export const addToCart = (id, quantityOrdered, uom, order) => async (
+export const addToCart = (id, quantityOrdered, uom, order, price) => async (
   dispatch,
   getState
 ) => {
-  const { data } = await axios.get(
-    `/api/product/${id}`
-  );
+  const { data } = await axios.get(`/api/product/${id}`);
   let updatedCartItemsCount = 0;
 
   // if (getState().cart.cartItems.cartItemsCount) {
@@ -29,34 +27,20 @@ export const addToCart = (id, quantityOrdered, uom, order) => async (
   dispatch({
     type: CART_ADD_ITEM,
     payload: {
-      product: data.id,
+      product: data._id,
       name: data.name,
-      imageUrl: data.imageurl,
-      description: data.name,
-      // image: data.imageUrl,
+      imageUrl: data.imageUrl,
+      description: data.description,
       // cartItemsCount: updatedCartItemsCount,
-      unitPrice:
-        order === "Domestic"
-          ? data.availableInDomestic
-              .filter((p) => uom === p.unitOfMessure)
-              .map((matchedRec) => matchedRec.sellingPrice)[0]
-          : data.availableInBulk
-              .filter((p) => uom === p.unitOfMessure)
-              .map((matchedRec) => matchedRec.sellingPrice)[0],
-      totalPrice:
-        order === "Domestic"
-          ? data.availableInDomestic
-              .filter((p) => uom === p.unitOfMessure)
-              .map(
-                (matchedRec) =>
-                  Number(matchedRec.unitPrice) * Number(quantityOrdered)
-              )[0]
-          : data.availableInBulk
-              .filter((p) => uom === p.unitOfMessure)
-              .map(
-                (matchedRec) =>
-                  Number(matchedRec.unitPrice) * Number(quantityOrdered)
-              )[0],
+      unitPrice: price / quantityOrdered,
+      // order === "Domestic"
+      //   ? data.availableInDomestic
+      //       .filter((p) => uom === p.unitOfMessure)
+      //       .map((matchedRec) => matchedRec.sellingPrice)[0]
+      //   : data.availableInBulk
+      //       .filter((p) => uom === p.unitOfMessure)
+      //       .map((matchedRec) => matchedRec.sellingPrice)[0],
+      totalPrice: price,
       countInStock: data.countInStock,
       quantityOrdered,
       uom,
