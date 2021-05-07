@@ -125,7 +125,7 @@ const ShippingScreen = ({ history }) => {
       </GridContainer>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <StepperScreen currentStep="1" />
+          <StepperScreen currentStep={1} />
         </GridItem>
         <GridItem xs={12} sm={12} md={12}>
           <Card>

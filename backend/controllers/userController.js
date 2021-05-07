@@ -5,21 +5,21 @@ import User from "../models/userModel.js";
 // @desc    Auth user & get token
 // @route   POST /api/users/login
 // @access  Public
-const authenticate = asyncHandler(async (req, res) => {
+const login = asyncHandler(async (req, res) => {
   const { userName, password } = req.body;
+  console.log(
+    "Exec login API User Name : " + userName + ", password: " + password
+  );
+  const users = await User.find();
+  console.log("User Count" + users.length);
+  const authUser = users.filter(
+    (eu) => eu.userName === userName && eu.password === password
+  );
 
-  const user = await User.find({ userName: userName });
-  console.log("User : " + user);
+  console.log("Auth User : " + authUser);
 
-  if (user) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      userName: user.userName,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      // token: generateToken(user._id),
-    });
+  if (authUser) {
+    res.json(authUser);
   } else {
     res.status(401);
     throw new Error("Invalid Credentails");
@@ -194,7 +194,7 @@ const update = asyncHandler(async (req, res) => {
 });
 
 export {
-  authenticate,
+  login,
   create,
   getProfile,
   updateProfile,

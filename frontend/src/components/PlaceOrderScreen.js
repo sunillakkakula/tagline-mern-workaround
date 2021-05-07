@@ -54,6 +54,8 @@ const PlaceOrderScreen = ({ history }) => {
 
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
+  const userLogin = useSelector((state) => state.userLogin);
+  const userInfo = [userLogin];
   const [payMethod, setPayMethod] = useState("");
 
   if (!cart.shippingAddress.address) {
@@ -99,6 +101,7 @@ const PlaceOrderScreen = ({ history }) => {
   }, [history, success]);
 
   const placeOrderHandler = () => {
+    console.log("EXEC placeOrderHandler ...!" + userInfo);
     dispatch(
       createOrder({
         orderItems: cart.cartItems,
@@ -142,7 +145,7 @@ const PlaceOrderScreen = ({ history }) => {
         </GridItem>
       </GridContainer>
       <Grid container className={classes.root} spacing={2}>
-        <Grid item xs={8} container justify="center">
+        <Grid item xs={8}>
           <Paper className={classes.paper}>
             <form onSubmit={placeOrderHandler}>
               {/* <Grid container>
@@ -355,11 +358,11 @@ const PlaceOrderScreen = ({ history }) => {
             </form>
           </Paper>
         </Grid>
-        <Grid item xs={4} container justify="center">
+        <Grid item xs={4} container>
           <Paper className={classes.paper}>
             <Typography variant="h6">Order Summary</Typography>
             <Divider />
-            <Grid container spacing={1} row justify="center">
+            <Grid container spacing={1} row="true" justify="center">
               <Grid item xs={12} justify="center">
                 <Grid container>
                   <Grid item xs={6}>
