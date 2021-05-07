@@ -12,7 +12,24 @@ export const addToCart = (id, quantityOrdered, uom, order, price) => async (
   dispatch,
   getState
 ) => {
+  console.log(
+    "id:" +
+      id +
+      ", quantityOrdered : " +
+      quantityOrdered +
+      " , uom : " +
+      uom +
+      " , order : " +
+      order +
+      " , price : " +
+      price
+  );
   const { data } = await axios.get(`/api/product/${id}`);
+  if(data){
+  console.log("Data before adding to Cart : " + data);
+  }else{
+    console.log("No Data after making axios get : "  );
+  }
   let updatedCartItemsCount = 0;
 
   // if (getState().cart.cartItems.cartItemsCount) {
@@ -31,20 +48,12 @@ export const addToCart = (id, quantityOrdered, uom, order, price) => async (
       name: data.name,
       imageUrl: data.imageUrl,
       description: data.description,
-      // cartItemsCount: updatedCartItemsCount,
       unitPrice: price / quantityOrdered,
-      // order === "Domestic"
-      //   ? data.availableInDomestic
-      //       .filter((p) => uom === p.unitOfMessure)
-      //       .map((matchedRec) => matchedRec.sellingPrice)[0]
-      //   : data.availableInBulk
-      //       .filter((p) => uom === p.unitOfMessure)
-      //       .map((matchedRec) => matchedRec.sellingPrice)[0],
       totalPrice: price,
       countInStock: data.countInStock,
       quantityOrdered,
       uom,
-      orderType: order === "Domestic" ? "Domestic" : "Bulk",
+      orderType: order,
     },
   });
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));

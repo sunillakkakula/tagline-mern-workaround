@@ -185,28 +185,28 @@ export default function CartLayoutScreen({ match, location, history }) {
     history.push("/login?redirect=shipping");
   };
 
-  const renderDialog = (
-    <Dialog
-      fullWidth
-      maxWidth="md"
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="max-width-dialog-title"
-    >
-      <DialogTitle id="max-width-dialog-title">Edit Cart Item</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          You can set my maximum width and whether to adapt or not.
-        </DialogContentText>
-        {/* <ProductScreen /> */}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="primary">
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
+  // const renderDialog = (
+  //   <Dialog
+  //     fullWidth
+  //     maxWidth="md"
+  //     open={open}
+  //     onClose={handleClose}
+  //     aria-labelledby="max-width-dialog-title"
+  //   >
+  //     <DialogTitle id="max-width-dialog-title">Edit Cart Item</DialogTitle>
+  //     <DialogContent>
+  //       <DialogContentText>
+  //         You can set my maximum width and whether to adapt or not.
+  //       </DialogContentText>
+  //       {/* <ProductScreen /> */}
+  //     </DialogContent>
+  //     <DialogActions>
+  //       <Button onClick={handleClose} color="primary">
+  //         Close
+  //       </Button>
+  //     </DialogActions>
+  //   </Dialog>
+  // );
 
   return (
     <div>
@@ -410,7 +410,7 @@ export default function CartLayoutScreen({ match, location, history }) {
           </Card>
         </GridItem>
       </GridContainer>
-      {renderDialog}
+      {/* {renderDialog} */}
     </div>
   );
 }
