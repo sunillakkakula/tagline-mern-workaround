@@ -78,6 +78,71 @@ const OrderScreen = ({ match, history }) => {
                 ) : (
                   <Grid conatiner>
                     <Grid item xs={12}>
+                      <Grid container>
+                        <Grid item xs={12} container justify="flex-start">
+                          <Typography variant="h6">Shipping </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Typography variant="body1">
+                            <strong>Name: </strong> {order.user.name}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Typography variant="body1">
+                            <strong>Email: </strong>{" "}
+                            <a href={`mailto:${order.user.email}`}>
+                              {order.user.email}
+                            </a>
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Grid container>
+                            <Grid item xs={6}>
+                              <Typography variant="body1">
+                                <strong>Address: </strong>
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                              <Typography variant="body1">
+                                {order.shippingAddress.address},{" "}
+                                {/* {order.shippingAddress.city}{" "}
+                                {order.shippingAddress.postalCode},{" "} */}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Grid container>
+                            <Grid item xs={6}>
+                              <Typography variant="body1">
+                                <strong>City: </strong>
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                              <Typography variant="body1">
+                                {order.shippingAddress.city}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Grid container>
+                            <Grid item xs={6}>
+                              <Typography variant="body1">
+                                <strong>Postal Code : </strong>
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                              <Typography variant="body1">
+                                {order.shippingAddress.postalCode},{" "}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Divider />
+                    <Grid item xs={12}>
                       <Typography variant="h6">Order # {orderId}</Typography>
                     </Grid>
                     <Divider />
@@ -117,7 +182,7 @@ const OrderScreen = ({ match, history }) => {
                               </Grid>
                               <Grid item xs={3}>
                                 <Typography variant="body1">
-                                  {item.quantityOrdered} X {/* </Typography> */}
+                                  {item.quantityOrdered} X
                                   <Icon classes={{ root: classes.iconRoot }}>
                                     <img
                                       alt="curency inr"
@@ -150,18 +215,49 @@ const OrderScreen = ({ match, history }) => {
                     ))}
                     <Grid item xs={12}>
                       <Grid container>
-                        <Grid item xs={12} container justify="flex-start">
+                        <Grid item xs={12}>
                           <Typography variant="h6">Payment Details</Typography>
                         </Grid>
-                        <Grid item xs={3}>
+                        <Grid item xs={6}>
                           <Typography variant="body1">
                             Payment Method
                           </Typography>
                         </Grid>
-                        <Grid item xs={9}>
+                        <Grid item xs={6}>
                           <Typography variant="body1">
                             {order.paymentMethod}
                           </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Typography variant="body1">
+                            {order.isPaid ? (
+                              <Message variant="success">
+                                Paid on {order.paidAt}
+                              </Message>
+                            ) : (
+                              <Message variant="danger">Not Paid</Message>
+                            )}
+                          </Typography>
+                        </Grid>
+                        <Divider />
+                        
+                      </Grid>
+                      <Divider />
+                      <Grid item xs={12}>
+                        <Grid container>
+                          <Grid item xs={12}>
+                            <Typography variant="body1">
+                              {order.isDelivered ? (
+                                <Message variant="success">
+                                  Delivered on {order.deliveredAt}
+                                </Message>
+                              ) : (
+                                <Message variant="danger">
+                                  Not Delivered
+                                </Message>
+                              )}
+                            </Typography>
+                          </Grid>
                         </Grid>
                       </Grid>
                     </Grid>
