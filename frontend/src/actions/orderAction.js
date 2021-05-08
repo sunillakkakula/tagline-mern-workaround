@@ -38,7 +38,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
       },
     };
     console.log(userInfo[0]._id);
-    const { data } = await axios.post(`/api/order/create`, order, config);
+    const { data } = await axios.post(`/api/order`, order, config);
 
     dispatch({
       type: ORDER_CREATE_SUCCESS,

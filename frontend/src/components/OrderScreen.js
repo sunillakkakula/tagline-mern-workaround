@@ -125,7 +125,7 @@ const OrderScreen = ({ match, history }) => {
                                       className={classes.imageIcon}
                                     />
                                   </Icon>
-                                  {item.unitPrice}=
+                                  {item.totalPrice}=
                                 </Typography>
                               </Grid>
                               <Grid item xs={3} align="right">
@@ -138,7 +138,7 @@ const OrderScreen = ({ match, history }) => {
                                     />
                                   </Icon>
 
-                                  {item.quantityOrdered * item.unitPrice}
+                                  {item.quantityOrdered * item.totalPrice}
                                 </Typography>
                               </Grid>
                               <Grid item xs={3}></Grid>
@@ -190,7 +190,7 @@ const OrderScreen = ({ match, history }) => {
                           className={classes.imageIcon}
                         />
                       </Icon>
-                      {order.itemsPrice}
+                      {order.totalPrice}
                     </Typography>
                   </Grid>
                 </Grid>

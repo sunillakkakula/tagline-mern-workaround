@@ -2,11 +2,11 @@ import asyncHandler from "express-async-handler";
 import Order from "../models/orderModel.js";
 
 // @desc    Create new order
-// @route   POST /api/orders
+// @route   POST /api/order
 // @access  Private
-const addOrderItems = asyncHandler(async (req, res) => {
+const createOrder = asyncHandler(async (req, res) => {
   const {
-    _id,
+    user,
     orderItems,
     shippingAddress,
     paymentMethod,
@@ -15,15 +15,30 @@ const addOrderItems = asyncHandler(async (req, res) => {
     shippingPrice,
     totalPrice,
   } = req.body;
-  console.log("req.user._id : " + _id);
+
+  console.log("Add Order Items .!");
+  console.log("orderItems : ");
+  console.log(orderItems);
+
+  console.log("shippingAddress : ");
+  console.log(shippingAddress);
+  console.log("itemsPrice : ");
+  console.log(itemsPrice);
+  console.log("totalPrice : ");
+  console.log(totalPrice);
+  console.log("taxPrice : ");
+  console.log(taxPrice);
+  console.log("Payment method : ");
+  console.log(paymentMethod);
+  console.log("user : " + user);
   if (orderItems && orderItems.length === 0) {
     res.status(400);
     throw new Error("No order items");
     return;
   } else {
     const order = new Order({
+      user,
       orderItems,
-      user: _id,
       shippingAddress,
       paymentMethod,
       itemsPrice,
@@ -116,7 +131,7 @@ const getOrders = asyncHandler(async (req, res) => {
 });
 
 export {
-  addOrderItems,
+  createOrder,
   getOrderById,
   updateOrderToPaid,
   updateOrderToDelivered,

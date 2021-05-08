@@ -16,7 +16,6 @@ import {
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Divider } from "@material-ui/core";
 import rupeeSvgIcon from "../assets/images/currency-inr.svg";
-import imagePath from "../assets/images/products/edible-oils/Edible-Oils-2.jpg";
 import GridContainer from "../components/Grid/GridContainer";
 import GridItem from "../components/Grid/GridItem";
 import StepperScreen from "./StepperScreen";
@@ -55,7 +54,7 @@ const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const userLogin = useSelector((state) => state.userLogin);
-  const userInfo = [userLogin];
+  const { userInfo } = userLogin;
   const [payMethod, setPayMethod] = useState("");
 
   if (!cart.shippingAddress.address) {
@@ -87,7 +86,7 @@ const PlaceOrderScreen = ({ history }) => {
 
   useEffect(() => {
     if (success) {
-      history.push(`/order/${order.id}`);
+      history.push(`/order/${order._id}`);
       dispatch({ type: USER_DETAILS_RESET });
       dispatch({ type: ORDER_CREATE_RESET });
       // let cartItems = localStorage.getItem("paymentMethod");
@@ -101,15 +100,14 @@ const PlaceOrderScreen = ({ history }) => {
   }, [history, success]);
 
   const placeOrderHandler = () => {
-    console.log("EXEC placeOrderHandler ...!" + userInfo);
+    console.log("EXEC placeOrderHandler ...!");
+    console.log(cart);
     dispatch(
       createOrder({
+        user: userInfo[0]._id,
         orderItems: cart.cartItems,
-        shippingDetails: cart.shippingAddress,
-        paymentDetails: {
-          paymentType: cart.paymentMethod,
-          status: "Initiated",
-        },
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,

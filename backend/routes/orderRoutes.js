@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import {
-  addOrderItems,
+  createOrder,
   getOrderById,
   updateOrderToPaid,
   updateOrderToDelivered,
@@ -10,7 +10,7 @@ import {
 } from "../controllers/orderController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
-router.route("/create").post(addOrderItems);
+router.route("/").post(createOrder);
 router.route("/").get(getOrders);
 router.route("/myorders").get(getMyOrders);
 router.route("/:id").get(getOrderById);
