@@ -101,17 +101,6 @@ const LoginScreen = ({ location, history }) => {
                   </Grid>
 
                   <Grid item xs={12}>
-                    {/* <FormControl className={classes.margin}>
-                      <InputLabel htmlFor="input-with-icon-adornment"></InputLabel>
-                      <Input
-                        id="input-with-icon-adornment"
-                        startAdornment={
-                          <InputAdornment position="start">
-                            <AccountCircleOutlined />
-                          </InputAdornment>
-                        }
-                      />
-                    </FormControl> */}
                     <TextField
                       className={classes.inputText}
                       align="center"

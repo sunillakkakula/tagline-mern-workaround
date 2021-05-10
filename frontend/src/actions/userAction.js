@@ -132,9 +132,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
       userLogin: { userInfo },
     } = getState();
 
-    const { data } = await axios.get(
-      `/api/user/profile/${id}`
-    );
+    const { data } = await axios.get(`/api/user/profile/${id}`);
 
     dispatch({
       type: USER_DETAILS_SUCCESS,
@@ -172,11 +170,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.put(
-      `/api/users/profile`,
-      user,
-      config
-    );
+    const { data } = await axios.put(`/api/users/profile`, user, config);
 
     dispatch({
       type: USER_UPDATE_PROFILE_SUCCESS,
@@ -212,9 +206,7 @@ export const listUsers = () => async (dispatch, getState) => {
       userLogin: { userInfo },
     } = getState();
 
-    const { data } = await axios.get(
-      `/api/user`
-    );
+    const { data } = await axios.get(`/api/user`);
 
     dispatch({
       type: USER_LIST_SUCCESS,
@@ -251,10 +243,7 @@ export const deleteUser = (id) => async (dispatch, getState) => {
       },
     };
 
-    await axios.delete(
-      `/api/users/${id}`,
-      config
-    );
+    await axios.delete(`/api/users/${id}`, config);
 
     dispatch({ type: USER_DELETE_SUCCESS });
   } catch (error) {
@@ -289,11 +278,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.put(
-      `/api/users/${user._id}`,
-      user,
-      config
-    );
+    const { data } = await axios.put(`/api/users/${user._id}`, user, config);
 
     dispatch({ type: USER_UPDATE_SUCCESS });
 

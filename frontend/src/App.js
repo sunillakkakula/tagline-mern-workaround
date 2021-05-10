@@ -53,7 +53,7 @@ function App() {
             <Route path="/cart/:id?" component={CartLayoutScreen} />
             <Route path="/showcart" component={CartLayoutScreen} />
             {/* <Route path="/" component={CartLayoutScreen} /> */}
-            <Route path="/admin/userlist" component={UserListScreen} exact />
+            <Route path="/admin/user" component={UserListScreen} exact />
             <Route path="/admin/user/:id/edit" component={UserEditScreen} />
             <Route
               path="/admin/productlist"

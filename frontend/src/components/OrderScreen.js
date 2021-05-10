@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
-import Spinner from "../components/controls/Spinner";
+import Loader from "../components/Loader";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { getOrderDetailsById } from "../actions/orderAction";
 import { Divider, Grid, Icon, Paper, Typography } from "@material-ui/core";
@@ -51,7 +51,11 @@ const OrderScreen = ({ match, history }) => {
   const { loading, error, order } = orderDetails;
   console.log("Fetched Order by ID : " + orderId);
   console.log(order);
-  return (
+  return loading ? (
+    <Loader />
+  ) : error ? (
+    <Message variant="danger">{error}</Message>
+  ) : (
     <>
       <Grid container spacing={1}>
         <Grid item xs={12}>
@@ -240,7 +244,6 @@ const OrderScreen = ({ match, history }) => {
                           </Typography>
                         </Grid>
                         <Divider />
-                        
                       </Grid>
                       <Divider />
                       <Grid item xs={12}>
