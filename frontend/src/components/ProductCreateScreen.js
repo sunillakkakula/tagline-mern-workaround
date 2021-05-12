@@ -104,10 +104,12 @@ const ProductCreateScreen = ({ history, match }) => {
   }, [dispatch]);
   const categoryList = useSelector((state) => state.categoryList);
   const { categories } = categoryList;
+  if (categories) console.log(categories);
+  const allcategories = categories.categories;
 
   let renderCategoriesOptions = "";
-  if (categories && categories.length > 0) {
-    renderCategoriesOptions = categories.map((eachCategory, idx) => {
+  if (allcategories && allcategories.length > 0) {
+    renderCategoriesOptions = allcategories.map((eachCategory, idx) => {
       return (
         <MenuItem key={idx} value={eachCategory.id}>
           {eachCategory.name}
