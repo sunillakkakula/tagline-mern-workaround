@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { LinkContainer } from "react-router-bootstrap";
-import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -19,6 +16,7 @@ import { Link, useHistory } from "react-router-dom";
 import LoginScreen from "../components/LoginScreen";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/userAction";
+import CustomizedBadges from "./CustomizedBadges";
 import { FormControl, Select } from "@material-ui/core";
 import ShoppingCartCountScreen from "./ShoppingCartCountScreen";
 
@@ -69,64 +67,207 @@ const useStyles = makeStyles((theme) => ({
 const MuiHeader = () => {
   const history = useHistory();
   console.log(history);
+  let [alreadyLoggedIn, setAlreadyLoggedIn] = useState("false");
+  const classes = useStyles();
+  const [targetUrl, setTargetUrl] = React.useState("");
+  const [open, setOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+  alreadyLoggedIn = userInfo !== null ? true : false;
+  console.log("alreadyLoggedIn : " + alreadyLoggedIn);
+  let [loginLogoutBtnTitle, setLoginLogoutTitle] = useState("");
+  let [loginLogoutBtnUrl, setLoginLogoutUrl] = useState("");
+
+  useEffect(() => {
+    if (userInfo[0] && userInfo[0].name) {
+      setLoginLogoutTitle("logout");
+      setLoginLogoutUrl("/logout");
+    } else {
+      setLoginLogoutTitle("login");
+      setLoginLogoutUrl("/login");
+    }
+    // loginLogoutBtnUrl = alreadyLoggedIn === true ? "/logout" : "/login";
+    console.log(
+      "loginBtnTitle : " +
+        loginLogoutBtnTitle +
+        " , loginLogoutBtnUrl :" +
+        loginLogoutBtnUrl
+    );
+  }, [loginLogoutBtnTitle, loginLogoutBtnUrl]);
+
+  // let loginLogoutBtnTitle = alreadyLoggedIn === true ? "logout" : "login";
+  // let loginLogoutBtnUrl = alreadyLoggedIn === true ? "/logout" : "/login";
+  // console.log("loginBtnTitle : " + loginLogoutBtnTitle);
+  const roleOfuserInfoExist = userInfo && userInfo[0].role ? true : false;
+
+  const handleChange = (event) => {
+    console.log("event.target.value : " + event.target.value);
+
+    setTargetUrl(event.target.value);
+    history.push("/admin/" + event.target.value);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   const logoutHandler = () => {
     dispatch(logout());
+    history.push("/login");
   };
 
+  const handleLoginLogout = () => {
+    loginLogoutBtnTitle = alreadyLoggedIn === true ? "logout" : "login";
+    console.log("loginLogoutBtnTitle : " + loginLogoutBtnTitle);
+    if (alreadyLoggedIn) {
+      dispatch(logout());
+      history.push("/login");
+    }
+  };
+  const isMenuOpen = Boolean(anchorEl);
+
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleCartItems = () => {
+    console.log("Navigating to Cart Screen from the MUI Header Handler");
+    history.push("/showCart");
+  };
+
+  const menuId = "primary-search-account-menu";
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>
+        <Link to="/profile">
+          <Typography variant="body1" color="primary">
+            Profile
+          </Typography>
+        </Link>
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        {" "}
+        <Typography variant="body1" color="primary">
+          My account
+        </Typography>
+      </MenuItem>
+    </Menu>
+  );
+
+  // userInfo !== null && userInfo[0].role !== null ? true : false;
   return (
-    <header>
-      <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
-        <Container>
-          <LinkContainer to="/">
-            <Navbar.Brand>Tagline Traders</Navbar.Brand>
-          </LinkContainer>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            {/* <Route render={({ history }) => <SearchBox history={history} />} /> */}
-            <Nav className="ml-auto">
-              <LinkContainer to="/cart">
-                <Nav.Link>
-                  <i className="fas fa-shopping-cart"></i> Cart
-                </Nav.Link>
-              </LinkContainer>
-              {userInfo ? (
-                <NavDropdown title={userInfo[0].name} id="username">
-                  <LinkContainer to="/profile">
-                    <NavDropdown.Item>Profile</NavDropdown.Item>
-                  </LinkContainer>
-                  <NavDropdown.Item onClick={logoutHandler}>
-                    Logout
-                  </NavDropdown.Item>
-                </NavDropdown>
-              ) : (
-                <LinkContainer to="/login">
-                  <Nav.Link>
-                    <i className="fas fa-user"></i> Sign In
-                  </Nav.Link>
-                </LinkContainer>
+    <div className={classes.grow}>
+      <AppBar position="static">
+        <Toolbar>
+          <div>
+            <img
+              className="img-thumbnail"
+              alt="Staples"
+              src={logo}
+              style={{
+                height: "3.5rem",
+                width: "3.5rem",
+                marginRight: "5em",
+              }}
+            />
+          </div>
+          <Typography
+            className={classes.title}
+            variant="h6"
+            noWrap
+            style={{ color: "white" }}
+          >
+            Tagline Traders Groceries
+          </Typography>
+
+          <div className={classes.grow} />
+          <div className={classes.sectionDesktop}>
+            <ZipCodeTracker />
+
+            <Button
+              onClick={handleLoginLogout}
+              className={classes.loginBtn}
+              value={loginLogoutBtnTitle}
+              size="small"
+              variant="contained"
+              style={{
+                color: "green",
+                backgroundColor: "white",
+                height: "2rem",
+                margin: "0.5rem",
+                alignContent: "center",
+                verticalAlign: "baseline",
+              }}
+            >
+              {loginLogoutBtnTitle}
+            </Button>
+            <ShoppingCartCountScreen />
+
+            {roleOfuserInfoExist &&
+              userInfo[0].role &&
+              userInfo[0].role === "ROLE_USER" && (
+                <IconButton
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                  title={userInfo[0].userName}
+                >
+                  <AccountCircle />
+                </IconButton>
               )}
-              {userInfo && userInfo[0].isAdmin && (
-                <NavDropdown title="Admin" id="adminmenu">
-                  <LinkContainer to="/admin/users">
-                    <NavDropdown.Item>Users</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/productlist">
-                    <NavDropdown.Item>Products</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/orderlist">
-                    <NavDropdown.Item>Orders</NavDropdown.Item>
-                  </LinkContainer>
-                </NavDropdown>
+            {roleOfuserInfoExist &&
+              userInfo[0].role &&
+              userInfo[0].role === "ROLE_ADMIN" && (
+                <FormControl className={classes.formControl}>
+                  <Select
+                    labelId="demo-controlled-open-select-label"
+                    id="demo-controlled-open-select"
+                    open={open}
+                    defaultValue={userInfo[0].name}
+                    onClose={handleClose}
+                    onOpen={handleOpen}
+                    color={classes.primary}
+                    style={{
+                      backgroundColor: "white",
+                      padding: "0px 0px 0px 0px",
+                    }}
+                    onChange={handleChange}
+                  >
+                    <MenuItem value={userInfo[0].name}>
+                      {userInfo[0].name}
+                    </MenuItem>
+                    <MenuItem value="Users">users</MenuItem>
+                    <MenuItem value="products">Products</MenuItem>
+                    <MenuItem value="orderlist">Orders</MenuItem>
+                  </Select>
+                </FormControl>
               )}
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-    </header>
+          </div>
+        </Toolbar>
+      </AppBar>
+      {renderMenu}
+    </div>
   );
 };
 
