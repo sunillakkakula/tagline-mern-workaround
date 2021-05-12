@@ -13,6 +13,9 @@ import {
   SUB_CATEGORY_UPDATE_SUCCESS,
   SUB_CATEGORY_UPDATE_FAIL,
   SUB_CATEGORY_UPDATE_RESET,
+  SUB_CATEGORY_LIST_BY_CATEGORY_ID_REQUEST,
+  SUB_CATEGORY_LIST_BY_CATEGORY_ID_SUCCESS,
+  SUB_CATEGORY_LIST_BY_CATEGORY_ID_FAIL,
 } from "../constants/subCategoryConstants";
 
 export const subCategoryListReducer = (
@@ -31,6 +34,21 @@ export const subCategoryListReducer = (
   }
 };
 
+export const subCategoryListByCategoryIdReducer = (
+  state = { subcategories: [] },
+  action
+) => {
+  switch (action.type) {
+    case SUB_CATEGORY_LIST_BY_CATEGORY_ID_REQUEST:
+      return { loading: true, subcategories: [] };
+    case SUB_CATEGORY_LIST_BY_CATEGORY_ID_SUCCESS:
+      return { loading: false, subcategories: action.payload };
+    case SUB_CATEGORY_LIST_BY_CATEGORY_ID_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
 export const subCategoryDeleteReducer = (state = {}, action) => {
   switch (action.type) {
     case SUB_CATEGORY_DELETE_REQUEST:

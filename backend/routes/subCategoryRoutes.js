@@ -12,7 +12,7 @@ import {
 
 router.route("/").post(create).get(getAll);
 router.route("/").get(getAll);
-router.route("/category/:id").get(getAllByCategoryId);
+router.route("/catId/:id").get(getAllByCategoryId);
 router.route("/:id").delete(remove).get(getById).put(update);
 
 export default router;

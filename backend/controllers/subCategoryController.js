@@ -34,15 +34,10 @@ const getAllByCategoryId = asyncHandler(async (req, res) => {
   let subCategories = [];
   const categoryId = req.params.id;
   console.log(`Fetching Sub Categories by Category Id :${categoryId}`);
-  //subCategories = await SubCategory.find({category:{ObjectId(categoryId)}});
   subCategories = await SubCategory.find();
   let filtered = [];
   if (subCategories) {
     filtered = subCategories.filter((eachSubCat) => {
-      // console.log(`${eachSubCat.category} ,${categoryId}`);
-
-      // console.log(`${categoryId} `);
-
       return eachSubCat.category.toString() === categoryId.toString();
     });
     console.log(filtered);

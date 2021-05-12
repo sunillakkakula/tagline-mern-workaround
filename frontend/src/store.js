@@ -3,6 +3,7 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import {
   subCategoryListReducer,
+  subCategoryListByCategoryIdReducer,
   subCategoryDeleteReducer,
   subCategoryCreateReducer,
   subCategoryUpdateReducer,
@@ -62,6 +63,7 @@ import {
 
 const reducer = combineReducers({
   subCategoryList: subCategoryListReducer,
+  subCategoryListByCategory: subCategoryListByCategoryIdReducer,
   subCategoryDelete: subCategoryDeleteReducer,
   subCategoryUpdate: subCategoryUpdateReducer,
   subCategoryCreate: subCategoryCreateReducer,
