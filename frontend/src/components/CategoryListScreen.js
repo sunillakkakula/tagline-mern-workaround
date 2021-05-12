@@ -127,7 +127,7 @@ const CategoryListScreen = ({ history, match }) => {
             color="primary"
             onClick={createCategoryHandler}
           >
-            New product
+            New Category
           </Button>
         </GridItem>
         <GridItem xs={12} sm={12} md={12}>

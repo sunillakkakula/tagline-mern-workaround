@@ -105,6 +105,10 @@ const CategoryCreateScreen = ({ history, match }) => {
     );
   };
 
+  const handleCancel = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <>
       <GridContainer>
@@ -144,17 +148,6 @@ const CategoryCreateScreen = ({ history, match }) => {
               </CardHeader>
               <CardBody>
                 <form onSubmit={submitHandler}>
-                  <Grid container>
-                    <Grid item xs={12}>
-                      <Grid
-                        container
-                        spacing={1}
-                        alignItems="center"
-                        justify="center"
-                      ></Grid>
-                    </Grid>
-                  </Grid>
-
                   <Grid container spacing={1}>
                     <Grid item xs={12}>
                       <Grid
@@ -206,6 +199,49 @@ const CategoryCreateScreen = ({ history, match }) => {
                             }}
                           />
                         </Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={1}>
+                    <Grid item xs={3} style={{ margin: "auto" }}>
+                      <Grid
+                        container
+                        spacing={1}
+                        alignItems="center"
+                        justify="center"
+                      >
+                        <Grid item xs={6}>
+                          <Button
+                            style={{
+                              marginRight: "0.75rem",
+                              align: "center",
+                              width: "9rem",
+                            }}
+                            size="small"
+                            variant="contained"
+                            type="submit"
+                            color="primary"
+                            // onClick={handleSave}
+                          >
+                            ADD
+                          </Button>
+                        </Grid>
+                        {/* <Grid item xs={6}>
+                            <Button
+                              style={{
+                                marginRight: "0.75rem",
+                                align: "center",
+                                width: "9rem",
+                              }}
+                              size="small"
+                              variant="contained"
+                              type="submit"
+                              color="primary"
+                              onClick={handleCancel}
+                            >
+                              Cancel
+                            </Button>
+                          </Grid> */}
                       </Grid>
                     </Grid>
                   </Grid>
