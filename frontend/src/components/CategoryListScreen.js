@@ -82,17 +82,17 @@ const CategoryListScreen = ({ history, match }) => {
           <tr>
             <th>
               <Typography className={classes.cardTitleGreen} align="center">
-                Category ID
+                ID
               </Typography>
             </th>
             <th>
               <Typography className={classes.cardTitleGreen} align="center">
-                Category Name
+                Name
               </Typography>
             </th>
             <th>
               <Typography className={classes.cardTitleGreen} align="center">
-                Category Decsription
+                Decsription
               </Typography>
             </th>
           </tr>

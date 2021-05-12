@@ -75,13 +75,14 @@ const MuiHeader = () => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+  console.log(userInfo);
   alreadyLoggedIn = userInfo !== null ? true : false;
   console.log("alreadyLoggedIn : " + alreadyLoggedIn);
   let [loginLogoutBtnTitle, setLoginLogoutTitle] = useState("");
   let [loginLogoutBtnUrl, setLoginLogoutUrl] = useState("");
 
   useEffect(() => {
-    if (userInfo[0] && userInfo[0].name) {
+    if (userInfo && userInfo[0] && userInfo[0].name) {
       setLoginLogoutTitle("logout");
       setLoginLogoutUrl("/logout");
     } else {
@@ -95,11 +96,8 @@ const MuiHeader = () => {
         " , loginLogoutBtnUrl :" +
         loginLogoutBtnUrl
     );
-  }, [loginLogoutBtnTitle, loginLogoutBtnUrl]);
+  }, [userInfo, loginLogoutBtnTitle, loginLogoutBtnUrl]);
 
-  // let loginLogoutBtnTitle = alreadyLoggedIn === true ? "logout" : "login";
-  // let loginLogoutBtnUrl = alreadyLoggedIn === true ? "/logout" : "/login";
-  // console.log("loginBtnTitle : " + loginLogoutBtnTitle);
   const roleOfuserInfoExist = userInfo && userInfo[0].role ? true : false;
 
   const handleChange = (event) => {
