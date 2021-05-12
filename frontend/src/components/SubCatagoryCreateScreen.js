@@ -9,7 +9,7 @@ import GridContainer from "./Grid/GridContainer.js";
 import Card from "./Card/Card.js";
 import CardHeader from "./Card/CardHeader.js";
 import CardBody from "./Card/CardBody.js";
-
+import { listCategories } from "../actions/categoryAction";
 import {
   Typography,
   Grid,
@@ -18,7 +18,7 @@ import {
   MenuItem,
   Select,
 } from "@material-ui/core";
-import { createSubCategory } from "../actions/subCategoryAction";
+import { createSubCategoryByCategory } from "../actions/subCategoryAction";
 
 const SubCatagoryCreateScreen = ({ history, match }) => {
   const useStyles = makeStyles(() => ({
@@ -80,13 +80,35 @@ const SubCatagoryCreateScreen = ({ history, match }) => {
     },
   }));
   const classes = useStyles();
-
-  const [name, setName] = useState(() => "");
-  const [description, setDescription] = useState(() => "");
+  const [selectedCategoryId, setSelectedCategoryId] = useState(() => "");
   const dispatch = useDispatch();
 
-  const createdSubCategory = useSelector((state) => state.createSubCategory);
-  const { loading, error, subCategory, success } = createdSubCategory;
+  const handleChangeCategory = (e) => {
+    console.log("Category Changed  " + e.target.value);
+    setSelectedCategoryId(() => e.target.value);
+  };
+  useEffect(() => {
+    dispatch(listCategories());
+  }, [dispatch]);
+  const categoryList = useSelector((state) => state.categoryList);
+  const { loading, error, categories } = categoryList;
+  let cats = categories ? categories.categories : [];
+  const [name, setName] = useState(() => "");
+  const [description, setDescription] = useState(() => "");
+
+  const subCategoryCreate = useSelector((state) => state.subCategoryCreate);
+  const { success } = subCategoryCreate;
+
+  let renderCategoriesOptions = "";
+  if (cats && cats.length > 0) {
+    renderCategoriesOptions = cats.map((eachCategory, idx) => {
+      return (
+        <MenuItem key={idx} value={eachCategory._id}>
+          {eachCategory.name}
+        </MenuItem>
+      );
+    });
+  }
 
   if (success) {
     console.log("Success Response to redirecting to Sub Category List");
@@ -97,9 +119,10 @@ const SubCatagoryCreateScreen = ({ history, match }) => {
     e.preventDefault();
     console.log("name : " + name + " , description : " + description);
     dispatch(
-      createSubCategory({
+      createSubCategoryByCategory({
         name,
         description,
+        selectedCategoryId,
       })
     );
   };
@@ -114,7 +137,7 @@ const SubCatagoryCreateScreen = ({ history, match }) => {
             variant="contained"
             type="submit"
             color="primary"
-            to="/admin/productlist"
+            to="/admin/subcategories"
             style={{
               color: "white",
               backgroundColor: "#26A541",
@@ -139,10 +162,47 @@ const SubCatagoryCreateScreen = ({ history, match }) => {
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="primary">
-                <h4 className={classes.cardTitleWhite}>New Category </h4>
+                <h4 className={classes.cardTitleWhite}>New Sub Category </h4>
               </CardHeader>
               <CardBody>
                 <form onSubmit={submitHandler}>
+                  <GridItem xs={12} sm={12} md={12}>
+                    <GridContainer>
+                      <Grid item xs={12}>
+                        <Grid
+                          container
+                          spacing={1}
+                          alignItems="center"
+                          justify="center"
+                        >
+                          <Grid item xs={6}>
+                            <Typography
+                              variant="body1"
+                              style={{
+                                alignItems: "right",
+                                justify: "right",
+                                marginLeft: "5rem",
+                              }}
+                            >
+                              Category{" "}
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={6}>
+                            <Select
+                              value={selectedCategoryId}
+                              onChange={handleChangeCategory}
+                              placeholder="Category"
+                              style={{ width: "10rem" }}
+                            >
+                              {renderCategoriesOptions}
+                            </Select>
+                          </Grid>
+                        </Grid>
+                        {/* <Grid item xs={6}></Grid> */}
+                      </Grid>
+                    </GridContainer>
+                  </GridItem>
+
                   <Grid container spacing={1}>
                     <Grid item xs={12}>
                       <Grid

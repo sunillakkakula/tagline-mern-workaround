@@ -5,9 +5,9 @@ import {
   SUB_CATEGORY_DELETE_REQUEST,
   SUB_CATEGORY_DELETE_SUCCESS,
   SUB_CATEGORY_DELETE_FAIL,
-  SUB_CATEGORY_CREATE_RESET,
-  SUB_CATEGORY_CREATE_FAIL,
-  SUB_CATEGORY_CREATE_SUCCESS,
+  SUB_CATEGORY_CREATE_BY_CATEGORY_ID_REQUEST,
+  SUB_CATEGORY_CREATE_BY_CATEGORY_ID_SUCCESS,
+  SUB_CATEGORY_CREATE_BY_CATEGORY_ID_FAIL,
   SUB_CATEGORY_CREATE_REQUEST,
   SUB_CATEGORY_UPDATE_REQUEST,
   SUB_CATEGORY_UPDATE_SUCCESS,
@@ -64,14 +64,13 @@ export const subCategoryDeleteReducer = (state = {}, action) => {
 
 export const subCategoryCreateReducer = (state = {}, action) => {
   switch (action.type) {
-    case SUB_CATEGORY_CREATE_REQUEST:
+    case SUB_CATEGORY_CREATE_BY_CATEGORY_ID_REQUEST:
       return { loading: true };
-    case SUB_CATEGORY_CREATE_SUCCESS:
-      return { loading: false, success: true, subCategory: action.payload };
-    case SUB_CATEGORY_CREATE_FAIL:
+    case SUB_CATEGORY_CREATE_BY_CATEGORY_ID_SUCCESS:
+      return { loading: false, success: true, subcategory: action.payload };
+    case SUB_CATEGORY_CREATE_BY_CATEGORY_ID_FAIL:
       return { loading: false, error: action.payload };
-    case SUB_CATEGORY_CREATE_RESET:
-      return {};
+
     default:
       return state;
   }

@@ -15,6 +15,9 @@ import {
   SUB_CATEGORY_LIST_BY_CATEGORY_ID_REQUEST,
   SUB_CATEGORY_LIST_BY_CATEGORY_ID_SUCCESS,
   SUB_CATEGORY_LIST_BY_CATEGORY_ID_FAIL,
+  SUB_CATEGORY_CREATE_BY_CATEGORY_ID_REQUEST,
+  SUB_CATEGORY_CREATE_BY_CATEGORY_ID_SUCCESS,
+  SUB_CATEGORY_CREATE_BY_CATEGORY_ID_FAIL,
 } from "../constants/subCategoryConstants";
 
 export const listSubCategories = () => async (dispatch) => {
@@ -82,16 +85,35 @@ export const deleteSubCategory = (id) => async (dispatch, getState) => {
   }
 };
 
-export const createSubCategory = () => async (dispatch, getState) => {
+export const createSubCategoryByCategory = ({
+  name,
+  description,
+  category,
+}) => async (dispatch, getState) => {
   try {
+    console.log("EXEC createSubCategoryByCategory from subCategoryAction ");
     dispatch({
-      type: SUB_CATEGORY_CREATE_REQUEST,
+      type: SUB_CATEGORY_CREATE_BY_CATEGORY_ID_REQUEST,
     });
 
-    const { data } = await axios.post(`/api/subcategory`, {});
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const { data } = await axios.post(
+      `/api/subcategory`,
+      {
+        name,
+        description,
+        category,
+      },
+      config
+    );
 
     dispatch({
-      type: SUB_CATEGORY_CREATE_SUCCESS,
+      type: SUB_CATEGORY_CREATE_BY_CATEGORY_ID_SUCCESS,
       payload: data,
     });
   } catch (error) {
@@ -101,7 +123,7 @@ export const createSubCategory = () => async (dispatch, getState) => {
         : error.message;
 
     dispatch({
-      type: SUB_CATEGORY_CREATE_FAIL,
+      type: SUB_CATEGORY_CREATE_BY_CATEGORY_ID_FAIL,
       payload: message,
     });
   }

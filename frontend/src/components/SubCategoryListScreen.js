@@ -99,8 +99,8 @@ const SubCategoryListScreen = ({ history, match }) => {
     });
   }
 
-  const createCategoryHandler = (category) => {
-    history.push("/admin/category/new");
+  const createHandler = (category) => {
+    history.push("/admin/subcategories/new");
   };
   let renderContent = "";
   if (subcategories) {
@@ -160,7 +160,7 @@ const SubCategoryListScreen = ({ history, match }) => {
               variant="contained"
               type="submit"
               color="primary"
-              onClick={createCategoryHandler}
+              onClick={createHandler}
             >
               CREATE
             </Button>

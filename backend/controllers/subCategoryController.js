@@ -81,12 +81,18 @@ const remove = asyncHandler(async (req, res) => {
 // @route   POST /api/categorys
 // @access  Private/Admin
 const create = asyncHandler(async (req, res) => {
-  const { name, description, imageUrl, category } = req.body;
+  const { name, description, category } = req.body;
+  console.log(
+    "EXEC create of subCategories with Name : " +
+      name +
+      " , category : " +
+      category
+  );
   const subCategory = new SubCategory({
-    name: name,
-    description: description,
-    imageUrl: imageUrl,
-    category: category,
+    name,
+    description,
+    imageUrl,
+    category,
   });
 
   const createdSubCategory = await subCategory.save();
