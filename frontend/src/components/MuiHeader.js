@@ -257,9 +257,10 @@ const MuiHeader = () => {
                     <MenuItem value={userInfo[0].name}>
                       {userInfo[0].name}
                     </MenuItem>
-                    <MenuItem value="Users">users</MenuItem>
-                    <MenuItem value="products">Products</MenuItem>
-                    <MenuItem value="orderlist">Orders</MenuItem>
+                    <MenuItem value="users">users</MenuItem>
+                    <MenuItem value="products">products</MenuItem>
+                    <MenuItem value="categories">categories</MenuItem>
+                    <MenuItem value="orders">orders</MenuItem>
                   </Select>
                 </FormControl>
               )}

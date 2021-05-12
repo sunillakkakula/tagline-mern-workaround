@@ -5,6 +5,7 @@ import Category from "../models/categoryModel.js";
 // @route   GET /api/categories
 // @access  Public
 const getAll = asyncHandler(async (req, res) => {
+  console.log("Exec getAll of Category");
   const pageSize = 10;
   const page = Number(req.query.pageNumber) || 1;
 
@@ -21,7 +22,7 @@ const getAll = asyncHandler(async (req, res) => {
   const categories = await Category.find({ ...keyword })
     .limit(pageSize)
     .skip(pageSize * (page - 1));
-
+  console.log("categories : " + categories);
   res.json({ categories, page, pages: Math.ceil(count / pageSize) });
 });
 

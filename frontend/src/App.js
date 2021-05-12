@@ -28,6 +28,9 @@ import MuiHeader from "./components/MuiHeader";
 // import CategoriesSubMenuVer2 from "./components/CategoriesSubMenuVer2";
 import Dashboard from "./components/Dashboard";
 import ProductSettingsScreen from "./components/ProductSettingsScreen";
+import CategoryCreateScreen from "./components/CatagoryCreateScreen";
+import CategoryListScreen from "./components/CategoryListScreen";
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -53,15 +56,21 @@ function App() {
             <Route path="/cart/:id?" component={CartLayoutScreen} />
             <Route path="/showcart" component={CartLayoutScreen} />
             {/* <Route path="/" component={CartLayoutScreen} /> */}
-            <Route path="/admin/user" component={UserListScreen} exact />
-            <Route path="/admin/user/:id/edit" component={UserEditScreen} />
+            <Route path="/admin/users" component={UserListScreen} exact />
             <Route
-              path="/admin/productlist"
-              component={ProductListScreen}
+              path="/admin/categories"
+              component={CategoryListScreen}
               exact
             />
             <Route
-              path="/admin/productlist/:pageNumber"
+              path="/admin/category/new"
+              component={CategoryCreateScreen}
+              exact
+            />
+            <Route path="/admin/user/:id/edit" component={UserEditScreen} />
+            <Route path="/admin/products" component={ProductListScreen} exact />
+            <Route
+              path="/admin/products/:pageNumber"
               component={ProductListScreen}
               exact
             />
@@ -75,7 +84,7 @@ function App() {
               component={ProductCreateScreen}
               exact
             />
-            <Route path="/admin/orderlist" component={OrderListScreen} exact />
+            <Route path="/admin/orders" component={OrderListScreen} exact />
             <Route
               path="/search/:keyword"
               component={CategoryWiseProducts}
