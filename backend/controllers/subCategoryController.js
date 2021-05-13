@@ -82,6 +82,7 @@ const remove = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 const create = asyncHandler(async (req, res) => {
   const { name, description, category } = req.body;
+  console.log(req.body);
   console.log(
     "EXEC create of subCategories with Name : " +
       name +
@@ -91,7 +92,7 @@ const create = asyncHandler(async (req, res) => {
   const subCategory = new SubCategory({
     name,
     description,
-    imageUrl,
+    imageUrl: "",
     category,
   });
 

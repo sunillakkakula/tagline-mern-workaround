@@ -85,13 +85,21 @@ export const deleteSubCategory = (id) => async (dispatch, getState) => {
   }
 };
 
-export const createSubCategoryByCategory = ({
-  name,
-  description,
-  category,
-}) => async (dispatch, getState) => {
+export const createSubCategoryByCategory = (subcategory) => async (
+  dispatch,
+  getState
+) => {
   try {
-    console.log("EXEC createSubCategoryByCategory from subCategoryAction ");
+    const { name, description, selectedCategoryId } = subcategory;
+    console.log(subcategory);
+    console.log(
+      "EXEC createSubCategoryByCategory from subCategoryAction , name: " +
+        name +
+        " description : " +
+        description +
+        " , category : " +
+        selectedCategoryId
+    );
     dispatch({
       type: SUB_CATEGORY_CREATE_BY_CATEGORY_ID_REQUEST,
     });
@@ -107,7 +115,8 @@ export const createSubCategoryByCategory = ({
       {
         name,
         description,
-        category,
+        category: selectedCategoryId,
+        imageUrl: "",
       },
       config
     );

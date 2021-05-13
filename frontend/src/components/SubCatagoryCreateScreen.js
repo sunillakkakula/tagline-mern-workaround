@@ -80,7 +80,10 @@ const SubCatagoryCreateScreen = ({ history, match }) => {
     },
   }));
   const classes = useStyles();
+  const [name, setName] = useState(() => "");
+  const [description, setDescription] = useState(() => "");
   const [selectedCategoryId, setSelectedCategoryId] = useState(() => "");
+
   const dispatch = useDispatch();
 
   const handleChangeCategory = (e) => {
@@ -93,8 +96,6 @@ const SubCatagoryCreateScreen = ({ history, match }) => {
   const categoryList = useSelector((state) => state.categoryList);
   const { loading, error, categories } = categoryList;
   let cats = categories ? categories.categories : [];
-  const [name, setName] = useState(() => "");
-  const [description, setDescription] = useState(() => "");
 
   const subCategoryCreate = useSelector((state) => state.subCategoryCreate);
   const { success } = subCategoryCreate;
@@ -117,7 +118,14 @@ const SubCatagoryCreateScreen = ({ history, match }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log("name : " + name + " , description : " + description);
+    console.log(
+      "From subMitHandler UI Screen -  name : " +
+        name +
+        " , description : " +
+        description +
+        " , selectedCategoryId : " +
+        selectedCategoryId
+    );
     dispatch(
       createSubCategoryByCategory({
         name,
