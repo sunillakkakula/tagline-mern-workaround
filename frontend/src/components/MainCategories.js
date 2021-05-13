@@ -90,7 +90,7 @@ export default function MainCategories() {
                     "Each Item Id : " +
                       item._id +
                       ", Category Name : " +
-                      item.imageUrl
+                      item.name
                   )
                   // tempImgUrl = item.imageurl;
                 }

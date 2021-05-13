@@ -65,6 +65,30 @@ export const listProducts = (
   }
 };
 
+export const listProductsBySubCategory = (
+  productid,
+  keyword = "",
+  pageNumber = ""
+) => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_LIST_BY_SUB_CATEGORY_REQUEST });
+    const { data } = await axios.get("/api/subcategory/2/product");
+
+    dispatch({
+      type: PRODUCT_LIST_BY_SUB_CATEGORY_SUCCESS,
+      payload: data,
+    });
+    console.log(" Response Data : " + data);
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_LIST_BY_SUB_CATEGORY_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
 export const listProductDetails = (subCategoryId, productId) => async (
   dispatch
 ) => {
@@ -132,15 +156,12 @@ export const listProductsByCategoryId = (categoryId) => async (dispatch) => {
     });
   }
 };
-export const listProductsBySubCategoryId = (subCategoryId, productId) => async (
+export const listProductsBySubCategoryId = (subCategoryId) => async (
   dispatch
 ) => {
   try {
     dispatch({ type: PRODUCT_LIST_BY_SUB_CATEGORY_REQUEST });
-    // {`/api/subcategory/2/product/${match.params.id}`;}
-    const { data } = await axios.get(
-      `/api/subcategory/${subCategoryId}/product`
-    );
+    const { data } = await axios.get(`/api/product/subcat/${subCategoryId}`);
 
     dispatch({
       type: PRODUCT_LIST_BY_SUB_CATEGORY_SUCCESS,

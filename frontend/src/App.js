@@ -123,7 +123,7 @@ function App() {
               component={ProductSettingsScreen}
               exact
             />
-            <Route path="/admin/products" component={ProductListScreen} exact />
+            {/* <Route path="/admin/products" component={ProductListScreen} exact /> */}
             <Route path="/contact" component={Contact} exact />
             <Route path="/aboutus" component={AboutUs} exact />
             <Route path="/" component={Dashboard} exact />

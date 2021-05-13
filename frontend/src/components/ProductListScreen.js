@@ -1,9 +1,9 @@
-import React, { useEffect, Fragment } from "react";
+import React, { useEffect, Fragment, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Spinner from "../components/controls/Spinner";
-import { Link } from "@material-ui/core";
+import { Link, MenuItem } from "@material-ui/core";
 // import Button from "../components/controls/Button";
 import GridItem from "../components/Grid/GridItem.js";
 import GridContainer from "../components/Grid/GridContainer.js";
@@ -17,19 +17,16 @@ import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import SettingsIcon from "@material-ui/icons/Settings";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import { PRODUCT_CREATE_RESET } from "../constants/productConstants";
+import { Typography, Grid, Button, TextField, Select } from "@material-ui/core";
 import {
-  listProducts,
   deleteProduct,
   createProduct,
+  listProductsByCategoryId,
+  listProductsBySubCategoryId,
 } from "../actions/productAction";
-import {
-  Typography,
-  Grid,
-  Button,
-  TextField,
-  Paper,
-  IconButton,
-} from "@material-ui/core";
+import { Paper, IconButton } from "@material-ui/core";
+import { listCategories } from "../actions/categoryAction";
+import { listSubCategoriesByCategoryId } from "../actions/subCategoryAction";
 const styles = {
   cardCategoryWhite: {
     "&,& a,& a:hover,& a:focus": {
@@ -68,10 +65,102 @@ const ProductListScreen = ({ history, match }) => {
   const classes = useStyles();
   const pageNumber = match.params.pageNumber || 1;
 
+  const [categorySelected, setCategorySelected] = useState(() => "");
+  const [subCategorySelected, setSubCategorySelected] = useState(() => "");
   const dispatch = useDispatch();
 
-  const productList = useSelector((state) => state.productList);
-  const { loading, error, products, page, pages } = productList;
+  const handleChangeCategory = (e) => {
+    console.log("Category Changed  " + e.target.value);
+    setCategorySelected(() => e.target.value);
+  };
+  const handleChangeSubCategory = (e) => {
+    console.log("Sub Category Changed  " + e.target.value);
+    setSubCategorySelected(() => e.target.value);
+  };
+
+  useEffect(() => {
+    dispatch(listCategories());
+  }, [dispatch]);
+  const categoryList = useSelector((state) => state.categoryList);
+  const { loading, error, categories } = categoryList;
+
+  useEffect(() => {
+    dispatch(listSubCategoriesByCategoryId(categorySelected));
+  }, [dispatch, categorySelected]);
+
+  useEffect(() => {
+    dispatch(listProductsBySubCategoryId(subCategorySelected));
+  }, [dispatch, subCategorySelected]);
+
+  const productListBySubCategory = useSelector(
+    (state) => state.productListBySubCategory
+  );
+  const { products, page, pages } = productListBySubCategory;
+
+  const subCategoriesByCategory = useSelector(
+    (state) => state.subCategoryListByCategory
+  );
+  let cats;
+  if (categories) {
+    console.log(categories);
+    cats = categories.categories;
+  }
+
+  const { subcategories } = subCategoriesByCategory;
+  console.log(subcategories);
+
+  let renderCategoriesOptions = "";
+  if (cats && cats.length > 0) {
+    renderCategoriesOptions = cats.map((eachCategory, idx) => {
+      return (
+        <MenuItem key={idx} value={eachCategory._id}>
+          {eachCategory.name}
+        </MenuItem>
+      );
+    });
+  }
+
+  let renderSubCategoriesOptions = "";
+  if (subcategories && subcategories.length > 0) {
+    renderSubCategoriesOptions = subcategories.map((eachSubCategory, idx) => {
+      return (
+        <MenuItem key={idx} value={eachSubCategory._id}>
+          {eachSubCategory.name}
+        </MenuItem>
+      );
+    });
+  }
+
+  let renderproducts = "";
+
+  if (products && products.length > 0) {
+    renderproducts = products.map((product) => (
+      <tr key={product._id}>
+        <td>{product._id}</td>
+        <td>{product.name}</td>
+        <td>{product.description}</td>
+        <td>{product.countInStock}</td>
+        <td>{product.taxPercent}</td>
+        {/* <td>{product.isTaxable}</td> */}
+        <td>{product.brand}</td>
+        <td>
+          <EditRoundedIcon
+            style={{ color: "green" }}
+            onClick={() => handleEdit(product._id)}
+          />
+          <DeleteOutlineIcon
+            style={{ color: "red" }}
+            // onClick={() => }
+          />
+          <SettingsIcon
+            style={{ color: "green" }}
+            onClick={() => handleSettings(product._id)}
+          />
+        </td>
+      </tr>
+    ));
+  }
+  // }
 
   const productDelete = useSelector((state) => state.productDelete);
   const {
@@ -95,11 +184,10 @@ const ProductListScreen = ({ history, match }) => {
     dispatch({ type: PRODUCT_CREATE_RESET });
 
     if (!userInfo.role === "ROLE_ADMIN") history.push("/login");
-
     if (successCreate) {
       history.push("/admin/products");
     } else {
-      dispatch(listProducts());
+      dispatch(listProductsByCategoryId());
     }
   }, [
     dispatch,
@@ -125,8 +213,6 @@ const ProductListScreen = ({ history, match }) => {
   };
   const createProductHandler = (product) => {
     history.push("/admin/product/new");
-    // dispatch(createProduct(1));
-    // console.log("Create product Handler");
   };
 
   return (
@@ -159,6 +245,55 @@ const ProductListScreen = ({ history, match }) => {
               >
                 New product
               </Button>
+            </GridItem>
+
+            <GridItem xs={12} sm={12} md={12}>
+              <GridContainer>
+                <Grid item xs={3}>
+                  <Typography
+                    variant="body1"
+                    style={{
+                      alignItems: "right",
+                      justify: "right",
+                      marginLeft: "5rem",
+                    }}
+                  >
+                    Category{" "}
+                  </Typography>
+                </Grid>
+                <Grid item xs={3}>
+                  <Select
+                    value={categorySelected}
+                    onChange={handleChangeCategory}
+                    placeholder="Category"
+                    style={{ width: "10rem" }}
+                  >
+                    {renderCategoriesOptions}
+                  </Select>
+                </Grid>
+                <Grid item xs={3}>
+                  <Typography
+                    variant="body1"
+                    style={{
+                      alignItems: "right",
+                      justify: "right",
+                      marginLeft: "5rem",
+                    }}
+                  >
+                    Subcategory{" "}
+                  </Typography>
+                </Grid>
+                <Grid item xs={3}>
+                  <Select
+                    value={subCategorySelected}
+                    onChange={handleChangeSubCategory}
+                    placeholder="SubCategory"
+                    style={{ width: "10rem" }}
+                  >
+                    {renderSubCategoriesOptions}
+                  </Select>
+                </Grid>
+              </GridContainer>
             </GridItem>
           </GridContainer>
           <GridContainer>
@@ -211,14 +346,6 @@ const ProductListScreen = ({ history, match }) => {
                             Tax Percent
                           </Typography>
                         </th>
-                        {/* <th>
-                          <Typography
-                            className={classes.cardTitleGreen}
-                            align="center"
-                          >
-                            Is Taxable
-                          </Typography>
-                        </th> */}
                         <th>
                           <Typography
                             className={classes.cardTitleGreen}
@@ -237,33 +364,7 @@ const ProductListScreen = ({ history, match }) => {
                         </th>
                       </tr>
                     </thead>
-                    <tbody>
-                      {products.map((product) => (
-                        <tr key={product.id}>
-                          <td>{product.id}</td>
-                          <td>{product.name}</td>
-                          <td>{product.description}</td>
-                          <td>{product.countInStock}</td>
-                          <td>{product.taxPercent}</td>
-                          {/* <td>{product.isTaxable}</td> */}
-                          <td>{product.brand}</td>
-                          <td>
-                            <EditRoundedIcon
-                              style={{ color: "green" }}
-                              onClick={() => handleEdit(product.id)}
-                            />
-                            <DeleteOutlineIcon
-                              style={{ color: "red" }}
-                              // onClick={() => }
-                            />
-                            <SettingsIcon
-                              style={{ color: "green" }}
-                              onClick={() => handleSettings(product.id)}
-                            />
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
+                    <tbody>{renderproducts ? renderproducts : ""}</tbody>
                   </Table>
                   <Paginate pages={pages} page={page} isAdmin={true} />
                 </CardBody>

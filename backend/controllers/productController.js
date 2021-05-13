@@ -46,7 +46,7 @@ const getAllBySubCategory = asyncHandler(async (req, res) => {
       res.json(filtered);
     } else {
       res.status(404);
-      throw new Error(`Products not found`);
+      throw new Error(`Products not found for ${subCategoryId}`);
     }
   }
 });
