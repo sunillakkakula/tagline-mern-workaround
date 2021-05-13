@@ -72,6 +72,7 @@ const ProductListScreen = ({ history, match }) => {
   const handleChangeCategory = (e) => {
     console.log("Category Changed  " + e.target.value);
     setCategorySelected(() => e.target.value);
+    setSubCategorySelected(() => "");
   };
   const handleChangeSubCategory = (e) => {
     console.log("Sub Category Changed  " + e.target.value);
