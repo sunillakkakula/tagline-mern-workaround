@@ -12,6 +12,9 @@ import {
   CATEGORY_UPDATE_REQUEST,
   CATEGORY_UPDATE_SUCCESS,
   CATEGORY_UPDATE_FAIL,
+  CATEGORY_BY_ID_REQUEST,
+  CATEGORY_BY_ID_SUCCESS,
+  CATEGORY_BY_ID_FAIL,
 } from "../constants/categoryConstants";
 
 export const listCategories = () => async (dispatch) => {
@@ -27,6 +30,27 @@ export const listCategories = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: CATEGORY_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const listCategoryById = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: CATEGORY_BY_ID_REQUEST });
+
+    const { data } = await axios.get(`/api/category/${id}`);
+
+    dispatch({
+      type: CATEGORY_BY_ID_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: CATEGORY_BY_ID_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
@@ -96,13 +120,21 @@ export const createCategory = ({ name, description }) => async (
   }
 };
 
-export const updateCategory = (category) => async (dispatch, getState) => {
+export const updateCategory = (id, name, description) => async (
+  dispatch,
+  getState
+) => {
   try {
+    console.log("Exec updateCategory from Action");
+    console.log(id, name, description);
     dispatch({
       type: CATEGORY_UPDATE_REQUEST,
     });
 
-    const { data } = await axios.put(`/api/category/${category._id}`, category);
+    const { data } = await axios.put(`/api/category/${id}`, {
+      name,
+      description,
+    });
 
     dispatch({
       type: CATEGORY_UPDATE_SUCCESS,

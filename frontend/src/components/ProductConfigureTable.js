@@ -94,19 +94,6 @@ const ProductConfigureTable = ({
         </CardHeader>
         <CardBody>
           <Table striped bordered hover responsive className="table-sm">
-            {/* <thead>
-              <tr>
-                <th>
-                  <Typography className={cardTitleGreen} align="center">
-                    {header.map((x, i) => (
-                      <td key={`thc-${i}`}>{x.name}</td>
-                    ))}
-                    <td>Edit</td>
-                    <td>Delete</td>
-                  </Typography>
-                </th>
-              </tr>
-            </thead> */}
             <tbody>
               {data.map((x, i) =>
                 row(

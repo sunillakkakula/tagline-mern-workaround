@@ -13,6 +13,9 @@ import {
   CATEGORY_UPDATE_SUCCESS,
   CATEGORY_UPDATE_FAIL,
   CATEGORY_UPDATE_RESET,
+  CATEGORY_BY_ID_REQUEST,
+  CATEGORY_BY_ID_SUCCESS,
+  CATEGORY_BY_ID_FAIL,
 } from "../constants/categoryConstants";
 
 export const categoryListReducer = (state = { categories: [] }, action) => {
@@ -22,6 +25,22 @@ export const categoryListReducer = (state = { categories: [] }, action) => {
     case CATEGORY_LIST_SUCCESS:
       return { loading: false, categories: action.payload };
     case CATEGORY_LIST_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const categoryDetailsByIdReducer = (
+  state = { category: {} },
+  action
+) => {
+  switch (action.type) {
+    case CATEGORY_BY_ID_REQUEST:
+      return { loading: true, category: {} };
+    case CATEGORY_BY_ID_SUCCESS:
+      return { loading: false, category: action.payload };
+    case CATEGORY_BY_ID_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

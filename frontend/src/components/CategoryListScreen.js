@@ -25,7 +25,7 @@ import {
   Paper,
   IconButton,
 } from "@material-ui/core";
-import { listCategories } from "../actions/categoryAction";
+import { deleteCategory, listCategories } from "../actions/categoryAction";
 const styles = {
   cardCategoryWhite: {
     "&,& a,& a:hover,& a:focus": {
@@ -71,9 +71,20 @@ const CategoryListScreen = ({ history, match }) => {
   const { loading, error, categories } = categoryList;
   console.log(categories.categories);
   const catgs = categories.categories;
+
   const createCategoryHandler = (category) => {
     history.push("/admin/category/new");
   };
+  const deleteHandler = (id) => {
+    if (window.confirm("Are you sure")) {
+      dispatch(deleteCategory(id));
+    }
+  };
+
+  const handleEdit = (id) => {
+    history.push(`/admin/category/edit/${id}`);
+  };
+
   let renderContent = "";
   if (catgs) {
     renderContent = (
@@ -95,6 +106,11 @@ const CategoryListScreen = ({ history, match }) => {
                 Decsription
               </Typography>
             </th>
+            <th>
+              <Typography className={classes.cardTitleGreen} align="center">
+                Action
+              </Typography>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -103,6 +119,16 @@ const CategoryListScreen = ({ history, match }) => {
               <td>{category._id}</td>
               <td>{category.name}</td>
               <td>{category.description}</td>
+              <td>
+                <EditRoundedIcon
+                  style={{ color: "green" }}
+                  onClick={() => handleEdit(category._id)}
+                />
+                <DeleteOutlineIcon
+                  style={{ color: "red" }}
+                  onClick={() => deleteHandler(category._id)}
+                />
+              </td>
             </tr>
           ))}
         </tbody>

@@ -32,6 +32,7 @@ import CategoryCreateScreen from "./components/CatagoryCreateScreen";
 import SubCategoryCreateScreen from "./components/SubCatagoryCreateScreen";
 import CategoryListScreen from "./components/CategoryListScreen";
 import SubCategoryListScreen from "./components/SubCategoryListScreen";
+import CategoryEditScreen from "./components/CategoryEditScreen";
 
 function App() {
   return (
@@ -79,7 +80,6 @@ function App() {
               component={SubCategoryCreateScreen}
               exact
             />
-
             <Route path="/admin/user/:id/edit" component={UserEditScreen} />
             <Route path="/admin/products" component={ProductListScreen} exact />
             <Route
@@ -118,6 +118,12 @@ function App() {
               component={CategoryWiseProducts}
               exact
             />
+            <Route
+              path="/admin/category/edit/:id"
+              component={CategoryEditScreen}
+              exact
+            />
+
             <Route
               path="/admin/product-settings/:productId"
               component={ProductSettingsScreen}

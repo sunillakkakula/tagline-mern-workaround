@@ -74,15 +74,28 @@ const create = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 const update = asyncHandler(async (req, res) => {
   const { name, description } = req.body;
+  console.log(
+    "Exc update from categoryController..!",
+    name,
+    description,
+    req.params.id
+  );
+  const categoryExists = await Category.findById(req.params.id);
 
-  const category = await Category.findById(req.params.id);
-
-  if (category) {
-    category.name = name;
-    category.description = description;
-    const updatedCategory = await category.save();
+  if (categoryExists) {
+    console.log("Category  FOUND");
+    categoryExists.name = name;
+    categoryExists.description = description;
+    console.log(
+      "Category  BEFORE SAVE  :",
+      categoryExists.name,
+      categoryExists.description
+    );
+    const updatedCategory = await categoryExists.save();
+    console.log("Category  UPDATED :" + updatedCategory);
     res.json(updatedCategory);
   } else {
+    console.log("Category not found");
     res.status(404);
     throw new Error("Category not found");
   }
