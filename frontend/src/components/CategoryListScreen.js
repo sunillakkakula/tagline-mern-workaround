@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from "react";
+import React, { useEffect, Fragment ,useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "./Message";
@@ -17,6 +17,9 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import { PRODUCT_CREATE_RESET } from "../constants/productConstants";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import { listOrders } from "../actions/orderAction";
+import Dialog from '@material-ui/core/Dialog'
+import DialogContent from '@material-ui/core/DialogContent'
+import { updateCategory } from "../actions/categoryAction";
 import {
   Typography,
   Grid,
@@ -26,6 +29,8 @@ import {
   IconButton,
 } from "@material-ui/core";
 import { deleteCategory, listCategories } from "../actions/categoryAction";
+import { SettingsInputAntennaTwoTone } from "@material-ui/icons";
+import { CATEGORY_UPDATE_RESET } from "../constants/categoryConstants";
 const styles = {
   cardCategoryWhite: {
     "&,& a,& a:hover,& a:focus": {
@@ -62,28 +67,83 @@ const styles = {
 const CategoryListScreen = ({ history, match }) => {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
+  const [name, setName] = useState(() => "");
+  const [description, setDescription] = useState(() => "");
+  const [open, setOpen] = useState(() => false);
+  const [filteredCat,setFilteredCat]  = useState(()=>{});
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(listCategories());
-  }, [dispatch]);
 
+  
+
+  /*useEffect(() => {
+    if (successUpdate) {
+      dispatch({ type: PRODUCT_UPDATE_RESET })
+      history.push('/admin/productlist')
+    } else {
+      if (!product.name || product._id !== productId) {
+        dispatch(listProductDetails(productId))
+      } else {
+        setName(product.name)
+        setPrice(product.price)
+        setImage(product.image)
+        setBrand(product.brand)
+        setCategory(product.category)
+        setCountInStock(product.countInStock)
+        setDescription(product.description)
+      }
+    }
+  }, [dispatch, history, productId, product, successUpdate])*/
+  
   const categoryList = useSelector((state) => state.categoryList);
   const { loading, error, categories } = categoryList;
-  console.log(categories.categories);
   const catgs = categories.categories;
+
+  const categoryUpdate = useSelector((state) => state.categoryUpdate);
+  const { success_update } = categoryUpdate;
+  
+  useEffect(() => {
+    console.log("useEffect Getting Called CategoryListScreen")
+    if(success_update ){
+      dispatch({ type: CATEGORY_UPDATE_RESET })
+      dispatch(listCategories());
+    }
+    else {
+        dispatch(listCategories());
+    }
+   
+  }, [dispatch, history, success_update]);
 
   const createCategoryHandler = (category) => {
     history.push("/admin/category/new");
   };
-  const deleteHandler = (id) => {
-    if (window.confirm("Are you sure")) {
-      dispatch(deleteCategory(id));
-    }
-  };
 
-  const handleEdit = (id) => {
-    history.push(`/admin/category/edit/${id}`);
-  };
+  const nameChangeHandler = (nm)=>{
+    setFilteredCat({...filteredCat,name:nm})
+    console.log(filteredCat)
+  }
+  
+  const descChangeHandler = (dsc)=>{
+    setFilteredCat({...filteredCat,description:dsc})
+    console.log(filteredCat)
+  }
+
+ 
+
+  const handleEdit = (catg) => {
+    setOpen(true)
+    console.log("ID SELECTED : "+catg._id)
+    setFilteredCat(catg);
+  }
+
+  const submitHandler=()=>{
+    console.log("EXEC submitHandler")
+    console.log(filteredCat)
+    dispatch(updateCategory(filteredCat._id, filteredCat.name, filteredCat.description));
+    setOpen(false);
+    setFilteredCat({})
+  }
+
+ 
 
   let renderContent = "";
   if (catgs) {
@@ -114,19 +174,19 @@ const CategoryListScreen = ({ history, match }) => {
           </tr>
         </thead>
         <tbody>
-          {categories.categories.map((category) => (
-            <tr key={category._id}>
-              <td>{category._id}</td>
-              <td>{category.name}</td>
-              <td>{category.description}</td>
+          {catgs.map((ec) => (
+            <tr key={ec._id}>
+              <td>{ec._id}</td>
+              <td>{ec.name}</td>
+              <td>{ec.description}</td>
               <td>
                 <EditRoundedIcon
                   style={{ color: "green" }}
-                  onClick={() => handleEdit(category._id)}
+                  onClick={() => handleEdit(ec)}
                 />
                 <DeleteOutlineIcon
                   style={{ color: "red" }}
-                  onClick={() => deleteHandler(category._id)}
+                  onClick={() => console.log("Deleting Cat By Id : "+ec._id)}
                 />
               </td>
             </tr>
@@ -164,6 +224,95 @@ const CategoryListScreen = ({ history, match }) => {
             <CardBody>{renderContent ? renderContent : ""}</CardBody>
           </Card>
         </GridItem>
+        <Dialog open={open} onClose={()=>setOpen(false)}>
+            <DialogContent>
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={12}>
+              <Card>
+                <CardHeader color="primary">
+                  <h4 className={classes.cardTitleWhite}>Edit Category </h4>
+                </CardHeader>
+                <CardBody>
+                  <form onSubmit={submitHandler}>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <Grid
+                          container
+                          spacing={1}
+                          alignItems="center"
+                          justify="center"
+                        >
+                          <Grid item xs={6}>
+                            <TextField
+                              className={classes.inputText}
+                              placeholder="Name"
+                              variant="outlined"
+                              name="name"
+                              onChange={(e)=>nameChangeHandler(e.target.value)}
+                              type="text"
+                              size="small"
+                              value={filteredCat && filteredCat.name  ?filteredCat.name:""}
+                              fullWidth
+                              InputProps={{
+                                classes: { input: classes.input },
+                              }}
+                            />
+                          </Grid>
+
+                          <Grid
+                            container
+                            spacing={1}
+                            alignItems="center"
+                            justify="center"
+                          >
+                            <Grid item xs={6}>
+                              <TextField
+                                className={classes.inputText}
+                                placeholder="Description"
+                                variant="outlined"
+                                name="description"
+                                id="description"
+                                onChange={(e)=>descChangeHandler(e.target.value)}
+                                type="text"
+                                size="small"
+                                value={filteredCat && filteredCat.description  ?filteredCat.description:""}
+                                fullWidth
+                                InputProps={{
+                                  classes: { input: classes.input },
+                                }}
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid
+                            container
+                            spacing={1}
+                            alignItems="center"
+                            justify="center"
+                          >
+                            <Grid item xs={5} justify="center"></Grid>
+                            <Grid item xs={2} justify="center">
+                              <Button
+                                size="small"
+                                variant="contained"
+                                type="submit"
+                                color="primary"
+                                // onClick={submitHandler}
+                              >
+                                Update
+                              </Button>
+                            </Grid>
+                            <Grid item xs={5} justify="center"></Grid>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </form>
+                </CardBody>
+              </Card>
+            </GridItem>
+          </GridContainer>
+            </DialogContent>
+        </Dialog>
       </GridContainer>
     </Fragment>
   );

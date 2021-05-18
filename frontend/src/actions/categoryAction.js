@@ -140,7 +140,7 @@ export const updateCategory = (id, name, description) => async (
       type: CATEGORY_UPDATE_SUCCESS,
       payload: data,
     });
-    dispatch({ type: CATEGORY_UPDATE_SUCCESS, payload: data });
+    // dispatch({ type: CATEGORY_UPDATE_SUCCESS, payload: data });
   } catch (error) {
     const message =
       error.response && error.response.data.message
