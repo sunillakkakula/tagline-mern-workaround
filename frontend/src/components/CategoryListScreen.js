@@ -18,8 +18,9 @@ import { PRODUCT_CREATE_RESET } from "../constants/productConstants";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import { listOrders } from "../actions/orderAction";
 import Dialog from '@material-ui/core/Dialog'
+import ConfirmDialog from './ConfirmDialog'
 import DialogContent from '@material-ui/core/DialogContent'
-import { updateCategory } from "../actions/categoryAction";
+import { updateCategory ,deleteCategory,listCategories} from "../actions/categoryAction";
 import {
   Typography,
   Grid,
@@ -28,7 +29,6 @@ import {
   Paper,
   IconButton,
 } from "@material-ui/core";
-import { deleteCategory, listCategories } from "../actions/categoryAction";
 import { SettingsInputAntennaTwoTone } from "@material-ui/icons";
 import { CATEGORY_UPDATE_RESET } from "../constants/categoryConstants";
 const styles = {
@@ -67,33 +67,13 @@ const styles = {
 const CategoryListScreen = ({ history, match }) => {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const [name, setName] = useState(() => "");
-  const [description, setDescription] = useState(() => "");
+  
   const [open, setOpen] = useState(() => false);
+  const [confirmOpen, setConfirmOpen] = useState(() => false);
   const [filteredCat,setFilteredCat]  = useState(()=>{});
+  const [action,setAction]  = useState(()=>{});
+
   const dispatch = useDispatch();
-
-  
-
-  /*useEffect(() => {
-    if (successUpdate) {
-      dispatch({ type: PRODUCT_UPDATE_RESET })
-      history.push('/admin/productlist')
-    } else {
-      if (!product.name || product._id !== productId) {
-        dispatch(listProductDetails(productId))
-      } else {
-        setName(product.name)
-        setPrice(product.price)
-        setImage(product.image)
-        setBrand(product.brand)
-        setCategory(product.category)
-        setCountInStock(product.countInStock)
-        setDescription(product.description)
-      }
-    }
-  }, [dispatch, history, productId, product, successUpdate])*/
-  
   const categoryList = useSelector((state) => state.categoryList);
   const { loading, error, categories } = categoryList;
   const catgs = categories.categories;
@@ -104,11 +84,14 @@ const CategoryListScreen = ({ history, match }) => {
   useEffect(() => {
     console.log("useEffect Getting Called CategoryListScreen")
     if(success_update ){
+      setAction("");
       dispatch({ type: CATEGORY_UPDATE_RESET })
       dispatch(listCategories());
+
     }
     else {
         dispatch(listCategories());
+        setAction("");
     }
    
   }, [dispatch, history, success_update]);
@@ -127,20 +110,32 @@ const CategoryListScreen = ({ history, match }) => {
     console.log(filteredCat)
   }
 
- 
-
   const handleEdit = (catg) => {
     setOpen(true)
     console.log("ID SELECTED : "+catg._id)
     setFilteredCat(catg);
+    setAction("edit");
+  }
+
+  const handleDelete = (catg) => {
+    console.log("handleDelete Exec..."+catg._id)
+    setAction("delete");
+    setConfirmOpen(true)
+    console.log("ID SELECTED : "+catg._id)
   }
 
   const submitHandler=()=>{
     console.log("EXEC submitHandler")
+    if(action==="edit"){
     console.log(filteredCat)
     dispatch(updateCategory(filteredCat._id, filteredCat.name, filteredCat.description));
     setOpen(false);
     setFilteredCat({})
+    }else if(action==="delete"){
+      console.log(filteredCat)
+    dispatch(deleteCategory(filteredCat._id));
+    setOpen(false);
+    }
   }
 
  
@@ -186,7 +181,7 @@ const CategoryListScreen = ({ history, match }) => {
                 />
                 <DeleteOutlineIcon
                   style={{ color: "red" }}
-                  onClick={() => console.log("Deleting Cat By Id : "+ec._id)}
+                  onClick={() =>handleDelete(ec)}
                 />
               </td>
             </tr>
@@ -224,6 +219,14 @@ const CategoryListScreen = ({ history, match }) => {
             <CardBody>{renderContent ? renderContent : ""}</CardBody>
           </Card>
         </GridItem>
+        <ConfirmDialog
+    title="Delete Category ?"
+    open={confirmOpen}
+    setOpen={setConfirmOpen}
+    onConfirm={()=>console.log("...DELETING")}
+  >
+    Are you sure you want to delete ?
+  </ConfirmDialog>
         <Dialog open={open} onClose={()=>setOpen(false)}>
             <DialogContent>
           <GridContainer>
@@ -296,7 +299,6 @@ const CategoryListScreen = ({ history, match }) => {
                                 variant="contained"
                                 type="submit"
                                 color="primary"
-                                // onClick={submitHandler}
                               >
                                 Update
                               </Button>
