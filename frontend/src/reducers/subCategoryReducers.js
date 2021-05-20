@@ -84,7 +84,11 @@ export const subCategoryUpdateReducer = (
     case SUB_CATEGORY_UPDATE_REQUEST:
       return { loading: true };
     case SUB_CATEGORY_UPDATE_SUCCESS:
-      return { loading: false, success: true, subCategory: action.payload };
+      return {
+        loading: false,
+        success_subcat_update: true,
+        subCategory: action.payload,
+      };
     case SUB_CATEGORY_UPDATE_FAIL:
       return { loading: false, error: action.payload };
     case SUB_CATEGORY_UPDATE_RESET:
