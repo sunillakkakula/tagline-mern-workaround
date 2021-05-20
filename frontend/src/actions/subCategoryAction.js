@@ -85,85 +85,85 @@ export const deleteSubCategory = (id) => async (dispatch, getState) => {
   }
 };
 
-export const createSubCategoryByCategory = (subcategory) => async (
-  dispatch,
-  getState
-) => {
-  try {
-    const { name, description, selectedCategoryId } = subcategory;
-    console.log(subcategory);
-    console.log(
-      "EXEC createSubCategoryByCategory from subCategoryAction , name: " +
-        name +
-        " description : " +
-        description +
-        " , category : " +
-        selectedCategoryId
-    );
-    dispatch({
-      type: SUB_CATEGORY_CREATE_BY_CATEGORY_ID_REQUEST,
-    });
+export const createSubCategoryByCategory =
+  (subcategory) => async (dispatch, getState) => {
+    try {
+      const { name, description, selectedCategoryId } = subcategory;
+      console.log(subcategory);
+      console.log(
+        "EXEC createSubCategoryByCategory from subCategoryAction , name: " +
+          name +
+          " description : " +
+          description +
+          " , category : " +
+          selectedCategoryId
+      );
+      dispatch({
+        type: SUB_CATEGORY_CREATE_BY_CATEGORY_ID_REQUEST,
+      });
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
 
-    const { data } = await axios.post(
-      `/api/subcategory`,
-      {
+      const { data } = await axios.post(
+        `/api/subcategory`,
+        {
+          name,
+          description,
+          category: selectedCategoryId,
+          imageUrl: "",
+        },
+        config
+      );
+
+      dispatch({
+        type: SUB_CATEGORY_CREATE_BY_CATEGORY_ID_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+
+      dispatch({
+        type: SUB_CATEGORY_CREATE_BY_CATEGORY_ID_FAIL,
+        payload: message,
+      });
+    }
+  };
+
+export const updateSubCategory =
+  (id, name, description) => async (dispatch, getState) => {
+    try {
+      console.log("exec updateSubCategory from my subCategoryAction");
+      dispatch({
+        type: SUB_CATEGORY_UPDATE_REQUEST,
+      });
+      console.log(id, name, description);
+      const { data } = await axios.put(`/api/subcategory/${id}`, {
         name,
         description,
-        category: selectedCategoryId,
-        imageUrl: "",
-      },
-      config
-    );
+      });
 
-    dispatch({
-      type: SUB_CATEGORY_CREATE_BY_CATEGORY_ID_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-
-    dispatch({
-      type: SUB_CATEGORY_CREATE_BY_CATEGORY_ID_FAIL,
-      payload: message,
-    });
-  }
-};
-
-export const updateSubCategory = (category) => async (dispatch, getState) => {
-  try {
-    dispatch({
-      type: SUB_CATEGORY_UPDATE_REQUEST,
-    });
-
-    const { data } = await axios.put(
-      `/api/subcategory/${category._id}`,
-      category
-    );
-
-    dispatch({
-      type: SUB_CATEGORY_UPDATE_SUCCESS,
-      payload: data,
-    });
-    dispatch({ type: SUB_CATEGORY_UPDATE_SUCCESS, payload: data });
-  } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    if (message === "Not authorized, token failed") {
+      dispatch({
+        type: SUB_CATEGORY_UPDATE_SUCCESS,
+        payload: data,
+      });
+      dispatch({ type: SUB_CATEGORY_UPDATE_SUCCESS, payload: data });
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      if (message === "Not authorized, token failed") {
+      }
+      dispatch({
+        type: SUB_CATEGORY_UPDATE_FAIL,
+        payload: message,
+      });
     }
-    dispatch({
-      type: SUB_CATEGORY_UPDATE_FAIL,
-      payload: message,
-    });
-  }
-};
+  };
