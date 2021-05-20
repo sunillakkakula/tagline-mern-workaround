@@ -9,6 +9,7 @@ import productRoutes from "./routes/productRoutes.js";
 import availableInBulkRoutes from "./routes/availableInBulkRoutes.js";
 import availableInDomesticRoutes from "./routes/availableInDomesticRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import emailRoutes from "./routes/emailRoutes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
@@ -23,6 +24,7 @@ app.use("/api/product", productRoutes);
 app.use("/api/avail-bulk", availableInBulkRoutes);
 app.use("/api/avail-domestic", availableInDomesticRoutes);
 app.use("/api/order", orderRoutes);
+app.use("/api/email", emailRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

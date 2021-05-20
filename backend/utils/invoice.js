@@ -1,11 +1,12 @@
-export const invoice = {
+import { createInvoice } from "./createInvoice.js";
+
+const invoice = {
   shipping: {
-    name: "John Doe",
-    address: "1234 Main Street",
-    city: "San Francisco",
-    state: "CA",
-    country: "US",
-    postal_code: 94111,
+    name: "SUNIL",
+    address: "KOKAPET",
+    city: "HYDERABAD",
+    state: "TS",
+    postal_code: "500075",
   },
   items: [
     {
@@ -25,3 +26,5 @@ export const invoice = {
   paid: 0,
   invoice_nr: 1234,
 };
+
+createInvoice(invoice, "invoice.pdf");
